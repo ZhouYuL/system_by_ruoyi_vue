@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.exam.mapper.ExamMapper">
+    
+    <resultMap type="Exam" id="ExamResult">
+        <result property="examId"    column="exam_id"    />
+        <result property="examSemester"    column="exam_semester"    />
+        <result property="examProject"    column="exam_project"    />
+        <result property="userId"    column="user_id"    />
+        <result property="userName"    column="user_name"    />
+        <result property="sex"    column="sex"    />
+        <result property="isMiss"    column="is_miss"    />
+        <result property="record"    column="record"    />
+        <result property="examTime"    column="exam_time"    />
+        <result property="isFail"    column="is_fail"    />
+    </resultMap>
+
+    <sql id="selectExamVo">
+        select exam_id, exam_semester, exam_project, user_id, user_name, sex, is_miss, record, exam_time, is_fail from exam_exam
+    </sql>
+
+    <select id="selectExamList" parameterType="Exam" resultMap="ExamResult">
+        <include refid="selectExamVo"/>
+        <where>  
+            <if test="examSemester != null  and examSemester != ''"> and exam_semester = #{examSemester}</if>
+            <if test="examProject != null  and examProject != ''"> and exam_project like concat('%', #{examProject}, '%')</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="userName != null  and userName != ''"> and user_name like concat('%', #{userName}, '%')</if>
+            <if test="sex != null  and sex != ''"> and sex = #{sex}</if>
+            <if test="isMiss != null  and isMiss != ''"> and is_miss = #{isMiss}</if>
+            <if test="params.beginRecord != null and params.beginRecord != '' and params.endRecord != null and params.endRecord != ''"> and record between #{params.beginRecord} and #{params.endRecord}</if>
+            <if test="examTime != null "> and exam_time = #{examTime}</if>
+            <if test="isFail != null  and isFail != ''"> and is_fail = #{isFail}</if>
+        </where>
+    </select>
+    
+    <select id="selectExamById" parameterType="Long" resultMap="ExamResult">
+        <include refid="selectExamVo"/>
+        where exam_id = #{examId}
+    </select>
+        
+    <insert id="insertExam" parameterType="Exam" useGeneratedKeys="true" keyProperty="examId">
+        insert into exam_exam
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="examSemester != null and examSemester != ''">exam_semester,</if>
+            <if test="examProject != null and examProject != ''">exam_project,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="userName != null and userName != ''">user_name,</if>
+            <if test="sex != null and sex != ''">sex,</if>
+            <if test="isMiss != null">is_miss,</if>
+            <if test="record != null">record,</if>
+            <if test="examTime != null">exam_time,</if>
+            <if test="isFail != null">is_fail,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="examSemester != null and examSemester != ''">#{examSemester},</if>
+            <if test="examProject != null and examProject != ''">#{examProject},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="userName != null and userName != ''">#{userName},</if>
+            <if test="sex != null and sex != ''">#{sex},</if>
+            <if test="isMiss != null">#{isMiss},</if>
+            <if test="record != null">#{record},</if>
+            <if test="examTime != null">#{examTime},</if>
+            <if test="isFail != null">#{isFail},</if>
+         </trim>
+    </insert>
+
+    <update id="updateExam" parameterType="Exam">
+        update exam_exam
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="examSemester != null and examSemester != ''">exam_semester = #{examSemester},</if>
+            <if test="examProject != null and examProject != ''">exam_project = #{examProject},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="userName != null and userName != ''">user_name = #{userName},</if>
+            <if test="sex != null and sex != ''">sex = #{sex},</if>
+            <if test="isMiss != null">is_miss = #{isMiss},</if>
+            <if test="record != null">record = #{record},</if>
+            <if test="examTime != null">exam_time = #{examTime},</if>
+            <if test="isFail != null">is_fail = #{isFail},</if>
+        </trim>
+        where exam_id = #{examId}
+    </update>
+
+    <delete id="deleteExamById" parameterType="Long">
+        delete from exam_exam where exam_id = #{examId}
+    </delete>
+
+    <delete id="deleteExamByIds" parameterType="String">
+        delete from exam_exam where exam_id in 
+        <foreach item="examId" collection="array" open="(" separator="," close=")">
+            #{examId}
+        </foreach>
+    </delete>
+</mapper>
