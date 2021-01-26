@@ -7,13 +7,9 @@
 * 权限认证使用Jwt，支持多终端认证系统。
 * 支持加载动态权限菜单，多方式轻松权限控制。
 * 高效率开发，使用代码生成器可以一键生成前后端代码。
-* 提供了单应用版本[RuoYi-Vue-fast](https://github.com/yangzongzhuan/RuoYi-Vue-fast)，Oracle版本[RuoYi-Vue-Oracle](https://github.com/yangzongzhuan/RuoYi-Vue-Oracle)，保持同步更新。
 * 不分离版本，请移步[RuoYi](https://gitee.com/y_project/RuoYi)，微服务版本，请移步[RuoYi-Cloud](https://gitee.com/y_project/RuoYi-Cloud)
-* 特别鸣谢：[element](https://github.com/ElemeFE/element)，[vue-element-admin](https://github.com/PanJiaChen/vue-element-admin)，[eladmin-web](https://github.com/elunez/eladmin-web)。
-* 阿里云折扣场：[点我进入](http://aly.ruoyi.vip)，腾讯云秒杀场：[点我进入](http://txy.ruoyi.vip)&nbsp;&nbsp;
-* 阿里云优惠券：[点我领取](https://www.aliyun.com/minisite/goods?userCode=brki8iof&share_source=copy_link)，腾讯云优惠券：[点我领取](https://cloud.tencent.com/redirect.php?redirect=1025&cps_key=198c8df2ed259157187173bc7f4f32fd&from=console)&nbsp;&nbsp;
 
-## 内置功能
+## 原系统内置功能
 
 1.  用户管理：用户是系统操作者，该功能主要完成系统用户配置。
 2.  部门管理：配置系统组织机构（公司、部门、小组），树结构展现支持数据权限。
@@ -34,52 +30,41 @@
 17. 在线构建器：拖动表单元素生成相应的HTML代码。
 18. 连接池监视：监视当前系统数据库连接池状态，可进行分析SQL找出系统性能瓶颈。
 
-## 在线体验
+## 本系统内置功能
+一、系统管理
+1.  用户管理：用户是系统操作者，该功能主要完成系统用户配置。
+2.  角色管理：角色菜单权限分配、设置角色按部门进行数据范围权限划分。
+3.  菜单管理：配置系统菜单，操作权限，按钮权限标识等。
+4.  部门管理：配置系统组织机构（学院、专业学科），树结构展现支持数据权限。
+5.  字典管理：对系统中经常使用的一些较为固定的数据进行维护。
+6.  通知公告：系统通知公告信息发布维护。
+7.  操作日志：系统正常操作日志记录和查询；系统异常信息日志记录和查询。
+8.  登录日志：系统登录日志记录查询包含登录异常。
 
-- admin/admin123  
-- 陆陆续续收到一些打赏，为了更好的体验已用于演示服务器升级。谢谢各位小伙伴。
+二、系统监控
+1.  在线用户：当前系统中活跃用户状态监控。
 
-演示地址：http://vue.ruoyi.vip  
-文档地址：http://doc.ruoyi.vip
+三、系统工具
+1.  表单构建：可以自定义表单样式。
+2.  代码生成：前后端代码的生成（java、html、xml、sql）支持CRUD下载 。
 
-## 演示图
+## 本系统应新增功能
 
-<table>
-    <tr>
-        <td><img src="https://oscimg.oschina.net/oscnet/cd1f90be5f2684f4560c9519c0f2a232ee8.jpg"/></td>
-        <td><img src="https://oscimg.oschina.net/oscnet/1cbcf0e6f257c7d3a063c0e3f2ff989e4b3.jpg"/></td>
-    </tr>
-    <tr>
-        <td><img src="https://oscimg.oschina.net/oscnet/up-8074972883b5ba0622e13246738ebba237a.png"/></td>
-        <td><img src="https://oscimg.oschina.net/oscnet/up-9f88719cdfca9af2e58b352a20e23d43b12.png"/></td>
-    </tr>
-    <tr>
-        <td><img src="https://oscimg.oschina.net/oscnet/up-39bf2584ec3a529b0d5a3b70d15c9b37646.png"/></td>
-        <td><img src="https://oscimg.oschina.net/oscnet/up-936ec82d1f4872e1bc980927654b6007307.png"/></td>
-    </tr>
-	<tr>
-        <td><img src="https://oscimg.oschina.net/oscnet/up-b2d62ceb95d2dd9b3fbe157bb70d26001e9.png"/></td>
-        <td><img src="https://oscimg.oschina.net/oscnet/up-d67451d308b7a79ad6819723396f7c3d77a.png"/></td>
-    </tr>	 
-    <tr>
-        <td><img src="https://oscimg.oschina.net/oscnet/5e8c387724954459291aafd5eb52b456f53.jpg"/></td>
-        <td><img src="https://oscimg.oschina.net/oscnet/644e78da53c2e92a95dfda4f76e6d117c4b.jpg"/></td>
-    </tr>
-	<tr>
-        <td><img src="https://oscimg.oschina.net/oscnet/up-8370a0d02977eebf6dbf854c8450293c937.png"/></td>
-        <td><img src="https://oscimg.oschina.net/oscnet/up-49003ed83f60f633e7153609a53a2b644f7.png"/></td>
-    </tr>
-	<tr>
-        <td><img src="https://oscimg.oschina.net/oscnet/up-d4fe726319ece268d4746602c39cffc0621.png"/></td>
-        <td><img src="https://oscimg.oschina.net/oscnet/up-c195234bbcd30be6927f037a6755e6ab69c.png"/></td>
-    </tr>
-    <tr>
-        <td><img src="https://oscimg.oschina.net/oscnet/b6115bc8c31de52951982e509930b20684a.jpg"/></td>
-        <td><img src="https://oscimg.oschina.net/oscnet/up-5e4daac0bb59612c5038448acbcef235e3a.png"/></td>
-    </tr>
-</table>
+1.  考试信息管理系统：任课老师可以导入Excel表格，通过Excel表格渲染出相应的表格页面，并进行填写。页面中可以对所有信息进行修改。修改完成后，导出表格为Excel。
+2.  课群排课子系统：由院领导增加课群，并添加课群中的老师。由课群负责人分配各个课程的具体任课老师。
+3.  毕业设计辅助管理子系统：由任课老师发布毕业设计题目，并由系主任进行审核。系主任审核通过后由院领导进行审核。所有审核通过后，学生选择指导老师和毕业设计题目，并上传毕业设计材料，填写毕业设计指导记录。
 
+## 一、考试信息管理系统
+（1） 搭建步骤：
+1.  搭建新的子系统模块 ruoyi-exam ，根据文档完成相关配置和测试。
+2.  构建相关页面数据表 exam_exam。
+3.  通过代码生成，根据数据表构建相关页面。
+4.  重启后台程序，完成基础搭建。
 
-## 若依前后端分离交流群
+（2）已完成内容：
+1.  数据基本的增删改查功能；
+2.  导出功能；
 
-QQ群： [![加入QQ群](https://img.shields.io/badge/已满-937441-blue.svg)](https://jq.qq.com/?_wv=1027&k=5bVB1og) [![加入QQ群](https://img.shields.io/badge/已满-887144332-blue.svg)](https://jq.qq.com/?_wv=1027&k=5eiA4DH) [![加入QQ群](https://img.shields.io/badge/已满-180251782-blue.svg)](https://jq.qq.com/?_wv=1027&k=5AxMKlC) [![加入QQ群](https://img.shields.io/badge/104180207-blue.svg)](https://jq.qq.com/?_wv=1027&k=51G72yr) 点击按钮入群。
+（3）未完成功能：
+1.  导入Excel表格功能；
+2.  自由修改属性列功能。
