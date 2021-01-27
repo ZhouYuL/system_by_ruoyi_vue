@@ -9,7 +9,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
 
 /**
  * 考试信息管理对象 exam_exam
- * 
+ *
  * @author 周宇龙
  * @date 2021-01-26
  */
@@ -36,12 +36,12 @@ public class Exam extends BaseEntity
     @Excel(name = "学生姓名")
     private String userName;
 
-    /** 性别 */
-    @Excel(name = "性别")
+    /** 性别 0=男生,1=女生,2=未知 */
+    @Excel(name = "性别",readConverterExp="0=男生,1=女生,2=未知", prompt="请填对应的数字0.男生1.女生2.未知")
     private String sex;
 
-    /** 是否缺考 */
-    @Excel(name = "是否缺考")
+    /** 是否缺考 0=缺考,1=不缺考,2=未知 */
+    @Excel(name = "是否缺考",readConverterExp="0=缺考,1=不缺考,2=未知", prompt="请填对应的数字0.缺考1.不缺考2.未知")
     private String isMiss;
 
     /** 成绩 */
@@ -53,97 +53,97 @@ public class Exam extends BaseEntity
     @Excel(name = "考试时间", width = 30, dateFormat = "yyyy-MM-dd")
     private Date examTime;
 
-    /** 是否及格 */
-    @Excel(name = "是否及格")
+    /** 是否及格 0=不及格,1=及格,2=未知 */
+    @Excel(name = "是否及格",readConverterExp="0=不及格,1=及格,2=未知", prompt="请填对应的数字0.不及格1.及格2.未知")
     private String isFail;
 
-    public void setExamId(Long examId) 
+    public void setExamId(Long examId)
     {
         this.examId = examId;
     }
 
-    public Long getExamId() 
+    public Long getExamId()
     {
         return examId;
     }
-    public void setExamSemester(String examSemester) 
+    public void setExamSemester(String examSemester)
     {
         this.examSemester = examSemester;
     }
 
-    public String getExamSemester() 
+    public String getExamSemester()
     {
         return examSemester;
     }
-    public void setExamProject(String examProject) 
+    public void setExamProject(String examProject)
     {
         this.examProject = examProject;
     }
 
-    public String getExamProject() 
+    public String getExamProject()
     {
         return examProject;
     }
-    public void setUserId(Long userId) 
+    public void setUserId(Long userId)
     {
         this.userId = userId;
     }
 
-    public Long getUserId() 
+    public Long getUserId()
     {
         return userId;
     }
-    public void setUserName(String userName) 
+    public void setUserName(String userName)
     {
         this.userName = userName;
     }
 
-    public String getUserName() 
+    public String getUserName()
     {
         return userName;
     }
-    public void setSex(String sex) 
+    public void setSex(String sex)
     {
         this.sex = sex;
     }
 
-    public String getSex() 
+    public String getSex()
     {
         return sex;
     }
-    public void setIsMiss(String isMiss) 
+    public void setIsMiss(String isMiss)
     {
         this.isMiss = isMiss;
     }
 
-    public String getIsMiss() 
+    public String getIsMiss()
     {
         return isMiss;
     }
-    public void setRecord(Long record) 
+    public void setRecord(Long record)
     {
         this.record = record;
     }
 
-    public Long getRecord() 
+    public Long getRecord()
     {
         return record;
     }
-    public void setExamTime(Date examTime) 
+    public void setExamTime(Date examTime)
     {
         this.examTime = examTime;
     }
 
-    public Date getExamTime() 
+    public Date getExamTime()
     {
         return examTime;
     }
-    public void setIsFail(String isFail) 
+    public void setIsFail(String isFail)
     {
         this.isFail = isFail;
     }
 
-    public String getIsFail() 
+    public String getIsFail()
     {
         return isFail;
     }

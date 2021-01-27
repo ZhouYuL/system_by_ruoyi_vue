@@ -19,10 +19,11 @@ import com.ruoyi.exam.domain.Exam;
 import com.ruoyi.exam.service.IExamService;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.common.core.page.TableDataInfo;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 考试信息管理Controller
- * 
+ *
  * @author 周宇龙
  * @date 2021-01-26
  */
@@ -56,6 +57,27 @@ public class ExamController extends BaseController
         List<Exam> list = examService.selectExamList(exam);
         ExcelUtil<Exam> util = new ExcelUtil<Exam>(Exam.class);
         return util.exportExcel(list, "exam_manage");
+    }
+
+    @Log(title = "用户管理", businessType = BusinessType.IMPORT)
+    @PreAuthorize("@ss.hasPermi('exam:exam_manage:import')")
+    @PostMapping("/importData")
+    public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception
+    {
+        ExcelUtil<Exam> util = new ExcelUtil<Exam>(Exam.class);
+        List<Exam> examList = util.importExcel(file.getInputStream());
+//        LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
+//        String operName = loginUser.getUsername();
+//        String message = examService.importUser(examList, updateSupport, operName);
+        String message = examService.importUser(examList, updateSupport);
+        return AjaxResult.success(message);
+    }
+
+    @GetMapping("/importTemplate")
+    public AjaxResult importTemplate()
+    {
+        ExcelUtil<Exam> util = new ExcelUtil<Exam>(Exam.class);
+        return util.importTemplateExcel("考试信息数据");
     }
 
     /**

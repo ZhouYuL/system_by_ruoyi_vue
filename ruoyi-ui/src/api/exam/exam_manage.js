@@ -51,3 +51,11 @@ export function exportExam_manage(query) {
     params: query
   })
 }
+
+// 下载用户导入模板
+export function importTemplate() {
+  return request({
+    url: '/exam/exam_manage/importTemplate',
+    method: 'get'
+  })
+}

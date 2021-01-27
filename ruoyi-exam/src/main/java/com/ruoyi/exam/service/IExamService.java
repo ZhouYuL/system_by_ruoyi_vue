@@ -5,15 +5,15 @@ import com.ruoyi.exam.domain.Exam;
 
 /**
  * 考试信息管理Service接口
- * 
+ *
  * @author 周宇龙
  * @date 2021-01-26
  */
-public interface IExamService 
+public interface IExamService
 {
     /**
      * 查询考试信息管理
-     * 
+     *
      * @param examId 考试信息管理ID
      * @return 考试信息管理
      */
@@ -21,7 +21,7 @@ public interface IExamService
 
     /**
      * 查询考试信息管理列表
-     * 
+     *
      * @param exam 考试信息管理
      * @return 考试信息管理集合
      */
@@ -29,7 +29,7 @@ public interface IExamService
 
     /**
      * 新增考试信息管理
-     * 
+     *
      * @param exam 考试信息管理
      * @return 结果
      */
@@ -37,7 +37,7 @@ public interface IExamService
 
     /**
      * 修改考试信息管理
-     * 
+     *
      * @param exam 考试信息管理
      * @return 结果
      */
@@ -45,7 +45,7 @@ public interface IExamService
 
     /**
      * 批量删除考试信息管理
-     * 
+     *
      * @param examIds 需要删除的考试信息管理ID
      * @return 结果
      */
@@ -53,9 +53,18 @@ public interface IExamService
 
     /**
      * 删除考试信息管理信息
-     * 
+     *
      * @param examId 考试信息管理ID
      * @return 结果
      */
     public int deleteExamById(Long examId);
+
+    /**
+     * 导入用户数据
+     *
+     * @param examList 用户数据列表
+     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
+     * @return 结果
+     */
+    public String importUser(List<Exam> examList, Boolean isUpdateSupport);
 }
