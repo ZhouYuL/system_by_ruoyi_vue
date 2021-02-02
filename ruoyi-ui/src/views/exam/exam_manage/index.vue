@@ -297,6 +297,7 @@
 <script>
 import { listExam_manage, getExam_manage, delExam_manage, addExam_manage, updateExam_manage, exportExam_manage } from "@/api/exam/exam_manage";
 import { getToken } from "@/utils/auth";
+import { listExam_index, getExam_index } from "@/api/exam/exam_index"
 
 export default {
   name: "Exam_manage",
@@ -318,6 +319,8 @@ export default {
       total: 0,
       // 考试信息管理表格数据
       exam_manageList: [],
+      // 默认考试信息课程
+      defaultExamProject: "",
       // 弹出层标题
       title: "",
       // 是否显示弹出层
@@ -395,6 +398,8 @@ export default {
     };
   },
   created() {
+    const indexId = this.$route.params && this.$route.params.indexId;
+    this.getExam_index(indexId);
     this.getList();
     this.getDicts("exam_semester").then(response => {
       this.examSemesterOptions = response.data;
@@ -410,6 +415,20 @@ export default {
     });
   },
   methods: {
+    /** 查询考试信息详细 */
+    getExam_index(indexId) {
+      getExam_index(indexId).then(response => {
+        this.queryParams.examProject = response.data.examName;
+        this.defaultExamProject = response.data.examName;
+        this.getList();
+      });
+    },
+    /** 查询考试信息首页列表 */
+    getTypeList() {
+      listExam_index().then(response => {
+        this.examSemesterOptions = response.rows;
+      });
+    },
     /** 查询考试信息管理列表 */
     getList() {
       this.loading = true;
@@ -445,7 +464,6 @@ export default {
       this.form = {
         examId: null,
         examSemester: null,
-        examProject: null,
         userId: null,
         userName: null,
         sex: null,
@@ -464,6 +482,7 @@ export default {
     /** 重置按钮操作 */
     resetQuery() {
       this.resetForm("queryForm");
+      this.queryParams.examProject = this.defaultExamProject;
       this.handleQuery();
     },
     // 多选框选中数据
@@ -476,7 +495,8 @@ export default {
     handleAdd() {
       this.reset();
       this.open = true;
-      this.title = "添加考试信息管理";
+      this.title = "添加考试信息数据";
+      this.form.examProject = this.queryParams.examProject;
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
@@ -485,7 +505,7 @@ export default {
       getExam_manage(examId).then(response => {
         this.form = response.data;
         this.open = true;
-        this.title = "修改考试信息管理";
+        this.title = "修改考试信息数据";
       });
     },
     /** 提交按钮 */

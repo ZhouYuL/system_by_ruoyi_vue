@@ -94,6 +94,20 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/exam',
+    // component: (resolve) => require(['@/views/exam/exam_index/index'], resolve),
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: 'exam_manage/:indexId(\\d+)',
+        component: (resolve) => require(['@/views/exam/exam_manage/index'], resolve),
+        name: 'Exam_manage',
+        meta: { title: '考试信息', icon: '' }
+      }
+    ]
+  },
+  {
     path: '/job',
     component: Layout,
     hidden: true,

@@ -251,6 +251,7 @@ export default {
           this.typeList = response.rows;
           this.total = response.total;
           this.loading = false;
+          console.log(this.$data)
         }
       );
     },
