@@ -9,19 +9,19 @@ import com.ruoyi.exam.service.IExamIndexService;
 
 /**
  * 考试信息管理首页Service业务层处理
- * 
+ *
  * @author 周宇龙
- * @date 2021-01-28
+ * @date 2021-02-06
  */
 @Service
-public class ExamIndexServiceImpl implements IExamIndexService 
+public class ExamIndexServiceImpl implements IExamIndexService
 {
     @Autowired
     private ExamIndexMapper examIndexMapper;
 
     /**
      * 查询考试信息管理首页
-     * 
+     *
      * @param indexId 考试信息管理首页ID
      * @return 考试信息管理首页
      */
@@ -33,7 +33,7 @@ public class ExamIndexServiceImpl implements IExamIndexService
 
     /**
      * 查询考试信息管理首页列表
-     * 
+     *
      * @param examIndex 考试信息管理首页
      * @return 考试信息管理首页
      */
@@ -45,7 +45,7 @@ public class ExamIndexServiceImpl implements IExamIndexService
 
     /**
      * 新增考试信息管理首页
-     * 
+     *
      * @param examIndex 考试信息管理首页
      * @return 结果
      */
@@ -57,7 +57,7 @@ public class ExamIndexServiceImpl implements IExamIndexService
 
     /**
      * 修改考试信息管理首页
-     * 
+     *
      * @param examIndex 考试信息管理首页
      * @return 结果
      */
@@ -69,7 +69,7 @@ public class ExamIndexServiceImpl implements IExamIndexService
 
     /**
      * 批量删除考试信息管理首页
-     * 
+     *
      * @param indexIds 需要删除的考试信息管理首页ID
      * @return 结果
      */
@@ -81,7 +81,7 @@ public class ExamIndexServiceImpl implements IExamIndexService
 
     /**
      * 删除考试信息管理首页信息
-     * 
+     *
      * @param indexId 考试信息管理首页ID
      * @return 结果
      */

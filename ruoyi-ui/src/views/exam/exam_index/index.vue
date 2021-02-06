@@ -1,6 +1,15 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
+      <el-form-item label="任课老师" prop="examTeacher">
+        <el-input
+          v-model="queryParams.examTeacher"
+          placeholder="请输入任课老师"
+          clearable
+          size="small"
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
       <el-form-item label="课程名称" prop="examName">
         <el-input
           v-model="queryParams.examName"
@@ -73,6 +82,7 @@
     <el-table v-loading="loading" :data="exam_indexList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="考试信息表编号" align="center" prop="indexId" />
+      <el-table-column label="任课老师" align="center" prop="examTeacher" />
       <el-table-column label="考试课程名称" align="center" prop="examName" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           <router-link :to="'/exam/exam_manage/' + scope.row.indexId" class="link-type">
@@ -116,6 +126,9 @@
     <!-- 添加或修改考试信息管理首页对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+        <el-form-item label="任课老师" prop="examTeacher">
+          <el-input v-model="form.examTeacher" placeholder="请输入任课老师" />
+        </el-form-item>
         <el-form-item label="考试课程名称" prop="examName">
           <el-input v-model="form.examName" placeholder="请输入考试课程名称" />
         </el-form-item>
@@ -165,6 +178,7 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
+        examTeacher: null,
         examName: null,
         examTime: null
       },
@@ -212,6 +226,7 @@ export default {
     reset() {
       this.form = {
         indexId: null,
+        examTeacher: null,
         examName: null,
         examTime: null
       };

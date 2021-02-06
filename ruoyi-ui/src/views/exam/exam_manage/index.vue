@@ -337,6 +337,7 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
+        indexId: null,
         examSemester: null,
         examProject: null,
         userId: null,
@@ -399,6 +400,7 @@ export default {
   },
   created() {
     const indexId = this.$route.params && this.$route.params.indexId;
+    console.log(indexId)
     this.getExam_index(indexId);
     this.getList();
     this.getDicts("exam_semester").then(response => {
@@ -418,21 +420,26 @@ export default {
     /** 查询考试信息详细 */
     getExam_index(indexId) {
       getExam_index(indexId).then(response => {
+        // console.log(indexId)
+        console.log(response.data)
+        this.queryParams.indexId = response.data.indexId;
         this.queryParams.examProject = response.data.examName;
         this.defaultExamProject = response.data.examName;
         this.getList();
       });
     },
     /** 查询考试信息首页列表 */
-    getTypeList() {
-      listExam_index().then(response => {
-        this.examSemesterOptions = response.rows;
-      });
-    },
+    // getTypeList() {
+    //   listExam_index().then(response => {
+    //     console.log(1)
+    //     this.examSemesterOptions = response.rows;
+    //   });
+    // },
     /** 查询考试信息管理列表 */
     getList() {
       this.loading = true;
       listExam_manage(this.queryParams).then(response => {
+        // console.log(response.rows)
         this.exam_manageList = response.rows;
         this.total = response.total;
         this.loading = false;

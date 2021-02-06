@@ -5,15 +5,15 @@ import com.ruoyi.exam.domain.ExamIndex;
 
 /**
  * 考试信息管理首页Service接口
- * 
+ *
  * @author 周宇龙
- * @date 2021-01-28
+ * @date 2021-02-06
  */
-public interface IExamIndexService 
+public interface IExamIndexService
 {
     /**
      * 查询考试信息管理首页
-     * 
+     *
      * @param indexId 考试信息管理首页ID
      * @return 考试信息管理首页
      */
@@ -21,7 +21,7 @@ public interface IExamIndexService
 
     /**
      * 查询考试信息管理首页列表
-     * 
+     *
      * @param examIndex 考试信息管理首页
      * @return 考试信息管理首页集合
      */
@@ -29,7 +29,7 @@ public interface IExamIndexService
 
     /**
      * 新增考试信息管理首页
-     * 
+     *
      * @param examIndex 考试信息管理首页
      * @return 结果
      */
@@ -37,7 +37,7 @@ public interface IExamIndexService
 
     /**
      * 修改考试信息管理首页
-     * 
+     *
      * @param examIndex 考试信息管理首页
      * @return 结果
      */
@@ -45,7 +45,7 @@ public interface IExamIndexService
 
     /**
      * 批量删除考试信息管理首页
-     * 
+     *
      * @param indexIds 需要删除的考试信息管理首页ID
      * @return 结果
      */
@@ -53,7 +53,7 @@ public interface IExamIndexService
 
     /**
      * 删除考试信息管理首页信息
-     * 
+     *
      * @param indexId 考试信息管理首页ID
      * @return 结果
      */

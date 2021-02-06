@@ -1,6 +1,8 @@
 package com.ruoyi.exam.domain;
 
 import java.util.Date;
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -9,9 +11,9 @@ import com.ruoyi.common.core.domain.BaseEntity;
 
 /**
  * 考试信息管理首页对象 exam_index
- * 
+ *
  * @author 周宇龙
- * @date 2021-01-28
+ * @date 2021-02-06
  */
 public class ExamIndex extends BaseEntity
 {
@@ -19,6 +21,10 @@ public class ExamIndex extends BaseEntity
 
     /** 考试信息表编号 */
     private Long indexId;
+
+    /** 任课老师 */
+    @Excel(name = "任课老师")
+    private String examTeacher;
 
     /** 考试课程名称 */
     @Excel(name = "考试课程名称")
@@ -29,30 +35,41 @@ public class ExamIndex extends BaseEntity
     @Excel(name = "考试时间", width = 30, dateFormat = "yyyy-MM-dd")
     private Date examTime;
 
-    public void setIndexId(Long indexId) 
+    private List<Exam> exams;
+
+    public void setIndexId(Long indexId)
     {
         this.indexId = indexId;
     }
 
-    public Long getIndexId() 
+    public Long getIndexId()
     {
         return indexId;
     }
-    public void setExamName(String examName) 
+    public void setExamTeacher(String examTeacher)
+    {
+        this.examTeacher = examTeacher;
+    }
+
+    public String getExamTeacher()
+    {
+        return examTeacher;
+    }
+    public void setExamName(String examName)
     {
         this.examName = examName;
     }
 
-    public String getExamName() 
+    public String getExamName()
     {
         return examName;
     }
-    public void setExamTime(Date examTime) 
+    public void setExamTime(Date examTime)
     {
         this.examTime = examTime;
     }
 
-    public Date getExamTime() 
+    public Date getExamTime()
     {
         return examTime;
     }
@@ -60,9 +77,10 @@ public class ExamIndex extends BaseEntity
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("indexId", getIndexId())
-            .append("examName", getExamName())
-            .append("examTime", getExamTime())
-            .toString();
+                .append("indexId", getIndexId())
+                .append("examTeacher", getExamTeacher())
+                .append("examName", getExamName())
+                .append("examTime", getExamTime())
+                .toString();
     }
 }

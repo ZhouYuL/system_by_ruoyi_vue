@@ -3,9 +3,10 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.exam.mapper.ExamMapper">
-    
+
     <resultMap type="Exam" id="ExamResult">
         <result property="examId"    column="exam_id"    />
+        <result property="indexId"    column="index_id"    />
         <result property="examSemester"    column="exam_semester"    />
         <result property="examProject"    column="exam_project"    />
         <result property="userId"    column="user_id"    />
@@ -18,12 +19,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectExamVo">
-        select exam_id, exam_semester, exam_project, user_id, user_name, sex, is_miss, record, exam_time, is_fail from exam_exam
+        select exam_id, index_id, exam_semester, exam_project, user_id, user_name, sex, is_miss, record, exam_time, is_fail from exam_exam
     </sql>
 
     <select id="selectExamList" parameterType="Exam" resultMap="ExamResult">
         <include refid="selectExamVo"/>
-        <where>  
+        <where>
+            <if test="indexId != null  and indexId != ''"> and index_id = #{indexId}</if>
             <if test="examSemester != null  and examSemester != ''"> and exam_semester = #{examSemester}</if>
             <if test="examProject != null  and examProject != ''"> and exam_project like concat('%', #{examProject}, '%')</if>
             <if test="userId != null "> and user_id = #{userId}</if>
@@ -35,12 +37,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="isFail != null  and isFail != ''"> and is_fail = #{isFail}</if>
         </where>
     </select>
-    
+
     <select id="selectExamById" parameterType="Long" resultMap="ExamResult">
         <include refid="selectExamVo"/>
         where exam_id = #{examId}
     </select>
-        
+
     <insert id="insertExam" parameterType="Exam" useGeneratedKeys="true" keyProperty="examId">
         insert into exam_exam
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -88,7 +90,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <delete id="deleteExamByIds" parameterType="String">
-        delete from exam_exam where exam_id in 
+        delete from exam_exam where exam_id in
         <foreach item="examId" collection="array" open="(" separator="," close=")">
             #{examId}
         </foreach>

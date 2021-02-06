@@ -1,47 +1,52 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.exam.mapper.ExamIndexMapper">
-    
+
     <resultMap type="ExamIndex" id="ExamIndexResult">
         <result property="indexId"    column="index_id"    />
+        <result property="examTeacher"    column="exam_teacher"    />
         <result property="examName"    column="exam_name"    />
         <result property="examTime"    column="exam_time"    />
     </resultMap>
 
     <sql id="selectExamIndexVo">
-        select index_id, exam_name, exam_time from exam_index
+        select index_id, exam_teacher, exam_name, exam_time from exam_index
     </sql>
 
     <select id="selectExamIndexList" parameterType="ExamIndex" resultMap="ExamIndexResult">
         <include refid="selectExamIndexVo"/>
-        <where>  
+        <where>
+            <if test="examTeacher != null  and examTeacher != ''"> and exam_teacher like concat('%', #{examTeacher}, '%')</if>
             <if test="examName != null  and examName != ''"> and exam_name like concat('%', #{examName}, '%')</if>
             <if test="examTime != null "> and exam_time = #{examTime}</if>
         </where>
     </select>
-    
+
     <select id="selectExamIndexById" parameterType="Long" resultMap="ExamIndexResult">
         <include refid="selectExamIndexVo"/>
         where index_id = #{indexId}
     </select>
-        
+
     <insert id="insertExamIndex" parameterType="ExamIndex" useGeneratedKeys="true" keyProperty="indexId">
         insert into exam_index
         <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="examTeacher != null">exam_teacher,</if>
             <if test="examName != null and examName != ''">exam_name,</if>
             <if test="examTime != null">exam_time,</if>
-         </trim>
+        </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="examTeacher != null">#{examTeacher},</if>
             <if test="examName != null and examName != ''">#{examName},</if>
             <if test="examTime != null">#{examTime},</if>
-         </trim>
+        </trim>
     </insert>
 
     <update id="updateExamIndex" parameterType="ExamIndex">
         update exam_index
         <trim prefix="SET" suffixOverrides=",">
+            <if test="examTeacher != null">exam_teacher = #{examTeacher},</if>
             <if test="examName != null and examName != ''">exam_name = #{examName},</if>
             <if test="examTime != null">exam_time = #{examTime},</if>
         </trim>
@@ -53,7 +58,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <delete id="deleteExamIndexByIds" parameterType="String">
-        delete from exam_index where index_id in 
+        delete from exam_index where index_id in
         <foreach item="indexId" collection="array" open="(" separator="," close=")">
             #{indexId}
         </foreach>

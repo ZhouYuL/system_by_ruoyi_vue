@@ -22,9 +22,9 @@ import com.ruoyi.common.core.page.TableDataInfo;
 
 /**
  * 考试信息管理首页Controller
- * 
+ *
  * @author 周宇龙
- * @date 2021-01-28
+ * @date 2021-02-06
  */
 @RestController
 @RequestMapping("/exam/exam_index")
@@ -95,7 +95,7 @@ public class ExamIndexController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('exam:exam_index:remove')")
     @Log(title = "考试信息管理首页", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{indexIds}")
+    @DeleteMapping("/{indexIds}")
     public AjaxResult remove(@PathVariable Long[] indexIds)
     {
         return toAjax(examIndexService.deleteExamIndexByIds(indexIds));

@@ -24,7 +24,7 @@ public class ExamServiceImpl implements IExamService
     private ExamMapper examMapper;
 
     /**
-     * 查询考试信息管理
+     * 根据ID查询考试信息管理
      *
      * @param examId 考试信息管理ID
      * @return 考试信息管理
