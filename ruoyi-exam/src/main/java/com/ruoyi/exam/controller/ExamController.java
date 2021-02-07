@@ -34,6 +34,8 @@ public class ExamController extends BaseController
     @Autowired
     private IExamService examService;
 
+    public Long indexId;
+
     /**
      * 查询考试信息管理列表
      */
@@ -41,6 +43,8 @@ public class ExamController extends BaseController
     @GetMapping("/list")
     public TableDataInfo list(Exam exam)
     {
+        indexId = exam.getIndexId();
+//        System.out.println(indexId);
         startPage();
         List<Exam> list = examService.selectExamList(exam);
         return getDataTable(list);
@@ -69,7 +73,9 @@ public class ExamController extends BaseController
 //        LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
 //        String operName = loginUser.getUsername();
 //        String message = examService.importUser(examList, updateSupport, operName);
-        String message = examService.importUser(examList, updateSupport);
+//        System.out.println(indexId);
+//        Long indexId = ;
+        String message = examService.importExam(examList, updateSupport, indexId);
         return AjaxResult.success(message);
     }
 

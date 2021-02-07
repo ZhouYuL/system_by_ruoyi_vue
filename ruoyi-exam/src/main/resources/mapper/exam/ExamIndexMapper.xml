@@ -29,6 +29,11 @@
         where index_id = #{indexId}
     </select>
 
+    <select id="selectExamIndexByName" parameterType="ExamIndex" resultMap="ExamIndexResult">
+        <include refid="selectExamIndexVo"/>
+        where exam_teacher = #{examTeacher}
+    </select>
+
     <insert id="insertExamIndex" parameterType="ExamIndex" useGeneratedKeys="true" keyProperty="indexId">
         insert into exam_index
         <trim prefix="(" suffix=")" suffixOverrides=",">

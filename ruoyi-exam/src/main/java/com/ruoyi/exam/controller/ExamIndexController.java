@@ -1,6 +1,11 @@
 package com.ruoyi.exam.controller;
 
 import java.util.List;
+
+import com.ruoyi.common.core.domain.entity.SysUser;
+import com.ruoyi.common.core.domain.model.LoginUser;
+import com.ruoyi.common.utils.ServletUtils;
+import com.ruoyi.framework.web.service.TokenService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,6 +38,9 @@ public class ExamIndexController extends BaseController
     @Autowired
     private IExamIndexService examIndexService;
 
+    @Autowired
+    private TokenService tokenService;
+
     /**
      * 查询考试信息管理首页列表
      */
@@ -40,9 +48,28 @@ public class ExamIndexController extends BaseController
     @GetMapping("/list")
     public TableDataInfo list(ExamIndex examIndex)
     {
-        startPage();
-        List<ExamIndex> list = examIndexService.selectExamIndexList(examIndex);
-        return getDataTable(list);
+        // 获取当前登录用户信息
+        LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
+        SysUser user = loginUser.getUser();
+        System.out.println(user.toString());
+        Long userId = user.getUserId();
+        if(userId == 1 || userId == 3){
+            // 当用户为管理员时，所有信息全部显示
+            startPage();
+            List<ExamIndex> list = examIndexService.selectExamIndexList(examIndex);
+            return getDataTable(list);
+        }else{
+            // 当用户为任课老师时，获取到该老师的user_name
+            String examTeacher = user.getUserName();
+            startPage();
+            List<ExamIndex> list = examIndexService.selectExamIndexByName(examTeacher);
+            return getDataTable(list);
+
+        }
+
+//        startPage();
+//        List<ExamIndex> list = examIndexService.selectExamIndexList(examIndex);
+//        return getDataTable(list);
     }
 
     /**

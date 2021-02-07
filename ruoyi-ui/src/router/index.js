@@ -95,7 +95,6 @@ export const constantRoutes = [
   },
   {
     path: '/exam',
-    // component: (resolve) => require(['@/views/exam/exam_index/index'], resolve),
     component: Layout,
     hidden: true,
     children: [

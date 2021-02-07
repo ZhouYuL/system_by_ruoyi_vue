@@ -58,4 +58,12 @@ public interface IExamIndexService
      * @return 结果
      */
     public int deleteExamIndexById(Long indexId);
+
+    /**
+     * 通过任课老师的name，获取到对应的考试信息首页信息
+     *
+     * @param examTeacher 任课老师的专属name
+     * @return
+     */
+    public List<ExamIndex> selectExamIndexByName(String examTeacher);
 }

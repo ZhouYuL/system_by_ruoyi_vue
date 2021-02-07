@@ -60,11 +60,11 @@ public interface IExamService
     public int deleteExamById(Long examId);
 
     /**
-     * 导入用户数据
+     * 导入考试信息数据
      *
      * @param examList 用户数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
+     * @param indexId 考试表对应的id
      * @return 结果
      */
-    public String importUser(List<Exam> examList, Boolean isUpdateSupport);
+    public String importExam(List<Exam> examList, boolean updateSupport, Long indexId);
 }

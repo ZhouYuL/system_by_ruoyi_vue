@@ -400,7 +400,7 @@ export default {
   },
   created() {
     const indexId = this.$route.params && this.$route.params.indexId;
-    console.log(indexId)
+    // console.log(indexId)
     this.getExam_index(indexId);
     this.getList();
     this.getDicts("exam_semester").then(response => {
@@ -421,7 +421,7 @@ export default {
     getExam_index(indexId) {
       getExam_index(indexId).then(response => {
         // console.log(indexId)
-        console.log(response.data)
+        // console.log(response.data)
         this.queryParams.indexId = response.data.indexId;
         this.queryParams.examProject = response.data.examName;
         this.defaultExamProject = response.data.examName;
@@ -438,12 +438,16 @@ export default {
     /** 查询考试信息管理列表 */
     getList() {
       this.loading = true;
+      // console.log(1)
       listExam_manage(this.queryParams).then(response => {
         // console.log(response.rows)
         this.exam_manageList = response.rows;
         this.total = response.total;
         this.loading = false;
-      });
+      }).catch(reject => {
+        //有选择性的在此处抛出错误或不抛出
+        console.log(reject);
+    });
     },
     // 学期字典翻译
     examSemesterFormat(row, column) {

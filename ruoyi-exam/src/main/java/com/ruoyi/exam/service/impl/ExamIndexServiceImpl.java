@@ -90,4 +90,9 @@ public class ExamIndexServiceImpl implements IExamIndexService
     {
         return examIndexMapper.deleteExamIndexById(indexId);
     }
+
+    @Override
+    public List<ExamIndex> selectExamIndexByName(String examTeacher) {
+        return examIndexMapper.selectExamIndexByName(examTeacher);
+    }
 }

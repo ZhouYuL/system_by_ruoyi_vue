@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.exception.CustomException;
+import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -95,60 +96,61 @@ public class ExamServiceImpl implements IExamService
         return examMapper.deleteExamById(examId);
     }
 
+
     /**
      * 导入考试信息数据
      *
      * @param examList 用户数据列表
-     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
+     * @param updateSupport 是否更新支持，如果已存在，则进行更新数据
+     * @param indexId 考试表对应的id
      * @return 结果
      */
     @Override
-    public String importUser(List<Exam> examList, Boolean isUpdateSupport) {
+    public String importExam(List<Exam> examList, boolean updateSupport,  Long indexId) {
         if (StringUtils.isNull(examList) || examList.size() == 0)
         {
-            throw new CustomException("导入用户数据不能为空！");
+            throw new CustomException("导入考试信息数据不能为空！");
         }
         int successNum = 0;
         int failureNum = 0;
         StringBuilder successMsg = new StringBuilder();
         StringBuilder failureMsg = new StringBuilder();
-//        String password = configService.selectConfigByKey("sys.user.initPassword");
-//        for (Exam user : examList)
-//        {
-//            try
-//            {
-//                // 验证是否存在这个用户
-//                Exam u = ExamMapper.selectUserByUserName(user.getUserName());
-//                if (StringUtils.isNull(u))
-//                {
-//                    user.setPassword(SecurityUtils.encryptPassword(password));
-//                    user.setCreateBy(operName);
-//                    this.insertUser(user);
-//                    successNum++;
-//                    successMsg.append("<br/>" + successNum + "、账号 " + user.getUserName() + " 导入成功");
-//                }
-//                else if (isUpdateSupport)
-//                {
-//                    user.setUpdateBy(operName);
-//                    this.updateUser(user);
-//                    successNum++;
-//                    successMsg.append("<br/>" + successNum + "、账号 " + user.getUserName() + " 更新成功");
-//                }
-//                else
-//                {
-//                    failureNum++;
-//                    failureMsg.append("<br/>" + failureNum + "、账号 " + user.getUserName() + " 已存在");
-//                }
-//            }
-//            catch (Exception e)
-//            {
-//                failureNum++;
-//                String msg = "<br/>" + failureNum + "、账号 " + user.getUserName() + " 导入失败：";
-//                failureMsg.append(msg + e.getMessage());
-//                log.error(msg, e);
-//            }
-//        }
+
+        for (Exam exam : examList)
+        {
+            try
+            {
+                // 验证是否存在这个用户
+                Exam e = examMapper.selectExamById(exam.getExamId());
+                if (StringUtils.isNull(e))
+                {
+                    exam.setIndexId(indexId);
+                    this.insertExam(exam);
+                    successNum++;
+                    successMsg.append("<br/>" + successNum + "、考试信息 " + exam.getUserName() + " 导入成功");
+                }
+                else if (updateSupport)
+                {
+                    exam.setIndexId(indexId);
+                    this.updateExam(exam);
+                    successNum++;
+                    successMsg.append("<br/>" + successNum + "、考试信息 " + exam.getUserName() + " 更新成功");
+                }
+                else
+                {
+                    failureNum++;
+                    failureMsg.append("<br/>" + failureNum + "、考试信息 " + exam.getUserName() + " 已存在");
+                }
+            }
+            catch (Exception e)
+            {
+                failureNum++;
+                String msg = "<br/>" + failureNum + "、考试信息 " + exam.getUserName() + " 导入失败：";
+                failureMsg.append(msg + e.getMessage());
+            }
+        }
 //        int i;
+
         for (Exam exam : examList) {
             this.insertExam(exam);
             successNum++;
