@@ -20,6 +20,14 @@ public interface ExamMapper
     public Exam selectExamById(Long examId);
 
     /**
+     * 根据考生Id查询考试信息
+     *
+     * @param userId 考生ID
+     * @return
+     */
+    public Exam selectExamByUserId(Long userId);
+
+    /**
      * 查询考试信息管理列表
      *
      * @param exam 考试信息管理

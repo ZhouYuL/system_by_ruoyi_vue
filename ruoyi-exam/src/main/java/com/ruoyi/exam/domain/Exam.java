@@ -20,8 +20,9 @@ public class Exam extends BaseEntity
     /** 序号 */
     private Long examId;
 
-    /** indexId */
-    private Long IndexId;
+    /** 考试信息表编号 */
+    //@Excel(name = "考试信息表编号")
+    private Long indexId;
 
     /** 学期 */
     @Excel(name = "学期")
@@ -71,11 +72,11 @@ public class Exam extends BaseEntity
     }
 
     public Long getIndexId() {
-        return IndexId;
+        return indexId;
     }
 
     public void setIndexId(Long indexId) {
-        IndexId = indexId;
+        this.indexId = indexId;
     }
 
     public void setExamSemester(String examSemester)

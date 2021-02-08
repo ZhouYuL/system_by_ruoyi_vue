@@ -25,7 +25,7 @@ public class ExamServiceImpl implements IExamService
     private ExamMapper examMapper;
 
     /**
-     * 根据ID查询考试信息管理
+     * 根据ExamID查询考试信息
      *
      * @param examId 考试信息管理ID
      * @return 考试信息管理
@@ -34,6 +34,17 @@ public class ExamServiceImpl implements IExamService
     public Exam selectExamById(Long examId)
     {
         return examMapper.selectExamById(examId);
+    }
+
+    /**
+     * 根据考生Id查询考试信息
+     *
+     * @param userId 考生ID
+     * @return
+     */
+    @Override
+    public Exam selectExamByUserId(Long userId) {
+        return examMapper.selectExamByUserId(userId);
     }
 
     /**
@@ -120,15 +131,20 @@ public class ExamServiceImpl implements IExamService
         {
             try
             {
-                // 验证是否存在这个用户
-                Exam e = examMapper.selectExamById(exam.getExamId());
+                // 根绝userId验证这张表是否存在这个用户
+                Exam e = examMapper.selectExamByUserId(exam.getUserId());
+//                System.out.println(e);
+                // 如果不存在，则插入新数据
                 if (StringUtils.isNull(e))
                 {
+                    System.out.println(indexId);
                     exam.setIndexId(indexId);
                     this.insertExam(exam);
                     successNum++;
                     successMsg.append("<br/>" + successNum + "、考试信息 " + exam.getUserName() + " 导入成功");
                 }
+                // 如果存在并且允许更新，则更新信息。本系统不支持更新数据，
+                // 如需修改为可更新模式，修改index.vue页面中的data中upload中updateSupport为1
                 else if (updateSupport)
                 {
                     exam.setIndexId(indexId);
@@ -136,24 +152,19 @@ public class ExamServiceImpl implements IExamService
                     successNum++;
                     successMsg.append("<br/>" + successNum + "、考试信息 " + exam.getUserName() + " 更新成功");
                 }
+                // 如果不存在并且不允许更新，则提示已存在该数据
                 else
                 {
                     failureNum++;
                     failureMsg.append("<br/>" + failureNum + "、考试信息 " + exam.getUserName() + " 已存在");
                 }
-            }
-            catch (Exception e)
+            }catch (Exception e)
             {
                 failureNum++;
                 String msg = "<br/>" + failureNum + "、考试信息 " + exam.getUserName() + " 导入失败：";
                 failureMsg.append(msg + e.getMessage());
+//                failureMsg.append(e.getMessage());
             }
-        }
-//        int i;
-
-        for (Exam exam : examList) {
-            this.insertExam(exam);
-            successNum++;
         }
         if (failureNum > 0)
         {

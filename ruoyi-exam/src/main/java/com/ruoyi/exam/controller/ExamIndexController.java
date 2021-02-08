@@ -51,7 +51,7 @@ public class ExamIndexController extends BaseController
         // 获取当前登录用户信息
         LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
         SysUser user = loginUser.getUser();
-        System.out.println(user.toString());
+//        System.out.println(user.toString());
         Long userId = user.getUserId();
         if(userId == 1 || userId == 3){
             // 当用户为管理员时，所有信息全部显示

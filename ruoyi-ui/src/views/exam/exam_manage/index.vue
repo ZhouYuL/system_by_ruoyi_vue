@@ -2,14 +2,13 @@
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
       <el-form-item label="学期" prop="examSemester">
-        <el-select v-model="queryParams.examSemester" placeholder="请选择学期" clearable size="small">
-          <el-option
-            v-for="dict in examSemesterOptions"
-            :key="dict.dictValue"
-            :label="dict.dictLabel"
-            :value="dict.dictValue"
-          />
-        </el-select>
+        <el-input
+          v-model="queryParams.examSemester"
+          placeholder="请输入学期"
+          clearable
+          size="small"
+          @keyup.enter.native="handleQuery"
+        />
       </el-form-item>
       <el-form-item label="课程名" prop="examProject">
         <el-input
@@ -149,7 +148,8 @@
 
     <el-table v-loading="loading" :data="exam_manageList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="序号" align="center" prop="examId" />
+      <el-table-column label="序号" type="index" align="center" width="100" />
+      <!-- <el-table-column label="序号" align="center" prop="examId" /> -->
       <el-table-column label="学期" align="center" prop="examSemester" :formatter="examSemesterFormat" />
       <el-table-column label="课程名" align="center" prop="examProject" />
       <el-table-column label="学生ID" align="center" prop="userId" />
@@ -195,14 +195,7 @@
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="学期" prop="examSemester">
-          <el-select v-model="form.examSemester" placeholder="请选择学期">
-            <el-option
-              v-for="dict in examSemesterOptions"
-              :key="dict.dictValue"
-              :label="dict.dictLabel"
-              :value="dict.dictValue"
-            ></el-option>
-          </el-select>
+          <el-input v-model="form.examSemester" placeholder="请输入学期" />
         </el-form-item>
         <el-form-item label="课程名" prop="examProject">
           <el-input v-model="form.examProject" placeholder="请输入课程名" />
@@ -321,6 +314,8 @@ export default {
       exam_manageList: [],
       // 默认考试信息课程
       defaultExamProject: "",
+      // 默认考试学期
+      defaultExamSemeste: "",
       // 弹出层标题
       title: "",
       // 是否显示弹出层
@@ -377,7 +372,9 @@ export default {
         { key: 9, label: `是否及格`, visible: true }
       ],
       // 表单参数
-      form: {},
+      form: {
+        indexId: null
+      },
       // 表单校验
       rules: {
         examSemester: [
@@ -422,9 +419,11 @@ export default {
       getExam_index(indexId).then(response => {
         // console.log(indexId)
         // console.log(response.data)
+        this.queryParams.examSemester = response.data.examSemester;
         this.queryParams.indexId = response.data.indexId;
         this.queryParams.examProject = response.data.examName;
         this.defaultExamProject = response.data.examName;
+        this.defaultExamSemeste = response.data.examSemester;
         this.getList();
       });
     },
@@ -474,7 +473,6 @@ export default {
     reset() {
       this.form = {
         examId: null,
-        examSemester: null,
         userId: null,
         userName: null,
         sex: null,
@@ -494,6 +492,7 @@ export default {
     resetQuery() {
       this.resetForm("queryForm");
       this.queryParams.examProject = this.defaultExamProject;
+      this.queryParams.examSemester = this.defaultExamSemeste;
       this.handleQuery();
     },
     // 多选框选中数据
@@ -508,6 +507,7 @@ export default {
       this.open = true;
       this.title = "添加考试信息数据";
       this.form.examProject = this.queryParams.examProject;
+      this.form.examSemester = this.queryParams.examSemester;
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
@@ -522,6 +522,7 @@ export default {
     /** 提交按钮 */
     submitForm() {
       this.$refs["form"].validate(valid => {
+        this.form.indexId = this.queryParams.indexId;
         if (valid) {
           if (this.form.examId != null) {
             updateExam_manage(this.form).then(response => {

@@ -43,10 +43,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where exam_id = #{examId}
     </select>
 
+    <select id="selectExamByUserId" parameterType="Long" resultMap="ExamResult">
+        <include refid="selectExamVo"/>
+        where user_id = #{userId}
+    </select>
+
     <insert id="insertExam" parameterType="Exam" useGeneratedKeys="true" keyProperty="examId">
         insert into exam_exam
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="indexId != null and indexId != ''">index_id,</if>
+            <if test="indexId != null">index_id,</if>
             <if test="examSemester != null and examSemester != ''">exam_semester,</if>
             <if test="examProject != null and examProject != ''">exam_project,</if>
             <if test="userId != null">user_id,</if>

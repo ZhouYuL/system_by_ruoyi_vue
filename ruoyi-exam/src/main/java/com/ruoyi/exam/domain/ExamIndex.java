@@ -22,6 +22,10 @@ public class ExamIndex extends BaseEntity
     /** 考试信息表编号 */
     private Long indexId;
 
+    /** 学期 */
+    @Excel(name = "学期")
+    private String examSemester;
+
     /** 任课老师 */
     @Excel(name = "任课老师")
     private String examTeacher;
@@ -45,6 +49,15 @@ public class ExamIndex extends BaseEntity
     public Long getIndexId()
     {
         return indexId;
+    }
+    public void setExamSemester(String examSemester)
+    {
+        this.examSemester = examSemester;
+    }
+
+    public String getExamSemester()
+    {
+        return examSemester;
     }
     public void setExamTeacher(String examTeacher)
     {
@@ -78,6 +91,7 @@ public class ExamIndex extends BaseEntity
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
                 .append("indexId", getIndexId())
+                .append("examSemester", getExamSemester())
                 .append("examTeacher", getExamTeacher())
                 .append("examName", getExamName())
                 .append("examTime", getExamTime())

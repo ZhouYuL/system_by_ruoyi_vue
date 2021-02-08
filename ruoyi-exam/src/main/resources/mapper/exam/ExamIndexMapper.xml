@@ -6,18 +6,20 @@
 
     <resultMap type="ExamIndex" id="ExamIndexResult">
         <result property="indexId"    column="index_id"    />
+        <result property="examSemester"    column="exam_semester"    />
         <result property="examTeacher"    column="exam_teacher"    />
         <result property="examName"    column="exam_name"    />
         <result property="examTime"    column="exam_time"    />
     </resultMap>
 
     <sql id="selectExamIndexVo">
-        select index_id, exam_teacher, exam_name, exam_time from exam_index
+        select index_id, exam_semester, exam_teacher, exam_name, exam_time from exam_index
     </sql>
 
     <select id="selectExamIndexList" parameterType="ExamIndex" resultMap="ExamIndexResult">
         <include refid="selectExamIndexVo"/>
         <where>
+            <if test="examSemester != null  and examSemester != ''"> and exam_semester = #{examSemester}</if>
             <if test="examTeacher != null  and examTeacher != ''"> and exam_teacher like concat('%', #{examTeacher}, '%')</if>
             <if test="examName != null  and examName != ''"> and exam_name like concat('%', #{examName}, '%')</if>
             <if test="examTime != null "> and exam_time = #{examTime}</if>
@@ -37,11 +39,13 @@
     <insert id="insertExamIndex" parameterType="ExamIndex" useGeneratedKeys="true" keyProperty="indexId">
         insert into exam_index
         <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="examSemester != null and examSemester != ''">exam_semester,</if>
             <if test="examTeacher != null">exam_teacher,</if>
             <if test="examName != null and examName != ''">exam_name,</if>
             <if test="examTime != null">exam_time,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="examSemester != null and examSemester != ''">#{examSemester},</if>
             <if test="examTeacher != null">#{examTeacher},</if>
             <if test="examName != null and examName != ''">#{examName},</if>
             <if test="examTime != null">#{examTime},</if>
@@ -51,6 +55,7 @@
     <update id="updateExamIndex" parameterType="ExamIndex">
         update exam_index
         <trim prefix="SET" suffixOverrides=",">
+            <if test="examSemester != null and examSemester != ''">exam_semester = #{examSemester},</if>
             <if test="examTeacher != null">exam_teacher = #{examTeacher},</if>
             <if test="examName != null and examName != ''">exam_name = #{examName},</if>
             <if test="examTime != null">exam_time = #{examTime},</if>

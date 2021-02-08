@@ -1,6 +1,16 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
+      <el-form-item label="学期" prop="examSemester">
+        <el-select v-model="queryParams.examSemester" placeholder="请选择学期" clearable size="small">
+          <el-option
+            v-for="dict in examSemesterOptions"
+            :key="dict.dictValue"
+            :label="dict.dictLabel"
+            :value="dict.dictValue"
+          />
+        </el-select>
+      </el-form-item>
       <el-form-item label="任课老师" prop="examTeacher">
         <el-input
           v-model="queryParams.examTeacher"
@@ -13,7 +23,7 @@
       <el-form-item label="课程名称" prop="examName">
         <el-input
           v-model="queryParams.examName"
-          placeholder="请输入考试课程名称"
+          placeholder="请输入课程名称"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
@@ -81,9 +91,11 @@
 
     <el-table v-loading="loading" :data="exam_indexList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="考试信息表编号" align="center" prop="indexId" />
+      <el-table-column label="序号" type="index" align="center" width="100" />
+      <!-- <el-table-column label="考试信息表编号" align="center" prop="indexId" /> -->
+      <el-table-column label="学期" align="center" prop="examSemester" :formatter="examSemesterFormat" />
       <el-table-column label="任课老师" align="center" prop="examTeacher" />
-      <el-table-column label="考试课程名称" align="center" prop="examName" :show-overflow-tooltip="true">
+      <el-table-column label="课程名称" align="center" prop="examName" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           <router-link :to="'/exam/exam_manage/' + scope.row.indexId" class="link-type">
             <span>{{ scope.row.examName }}</span>
@@ -126,10 +138,20 @@
     <!-- 添加或修改考试信息管理首页对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+        <el-form-item label="学期" prop="examSemester">
+          <el-select v-model="form.examSemester" placeholder="请选择学期">
+            <el-option
+              v-for="dict in examSemesterOptions"
+              :key="dict.dictValue"
+              :label="dict.dictLabel"
+              :value="dict.dictValue"
+            ></el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item label="任课老师" prop="examTeacher">
           <el-input v-model="form.examTeacher" placeholder="请输入任课老师" />
         </el-form-item>
-        <el-form-item label="考试课程名称" prop="examName">
+        <el-form-item label="课程名称" prop="examName">
           <el-input v-model="form.examName" placeholder="请输入考试课程名称" />
         </el-form-item>
         <el-form-item label="考试时间" prop="examTime">
@@ -174,10 +196,13 @@ export default {
       title: "",
       // 是否显示弹出层
       open: false,
+      // 学期字典
+      examSemesterOptions: [],
       // 查询参数
       queryParams: {
         pageNum: 1,
         pageSize: 10,
+        examSemester: null,
         examTeacher: null,
         examName: null,
         examTime: null
@@ -186,6 +211,9 @@ export default {
       form: {},
       // 表单校验
       rules: {
+        examSemester: [
+          { required: true, message: "学期不能为空", trigger: "change" }
+        ],
         examName: [
           { required: true, message: "考试课程名称不能为空", trigger: "blur" }
         ],
@@ -195,8 +223,11 @@ export default {
       }
     };
   },
-  mounted() {
+  created() {
     this.getList();
+    this.getDicts("exam_semester").then(response => {
+      this.examSemesterOptions = response.data;
+    });
   },
   methods: {
     /** 查询考试信息管理首页列表 */
@@ -217,6 +248,10 @@ export default {
     // statusFormat(row, column) {
     //   return this.selectDictLabel(this.statusOptions, row.status);
     // },
+    // 学期字典翻译
+    examSemesterFormat(row, column) {
+      return this.selectDictLabel(this.examSemesterOptions, row.examSemester);
+    },
     // 取消按钮
     cancel() {
       this.open = false;
@@ -226,6 +261,7 @@ export default {
     reset() {
       this.form = {
         indexId: null,
+        examSemester: null,
         examTeacher: null,
         examName: null,
         examTime: null
