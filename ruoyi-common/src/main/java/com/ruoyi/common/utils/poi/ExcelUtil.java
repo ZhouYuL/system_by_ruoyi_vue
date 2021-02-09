@@ -8,6 +8,8 @@ import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -60,7 +62,7 @@ import com.ruoyi.common.utils.reflect.ReflectUtils;
 
 /**
  * Excel相关处理
- * 
+ *
  * @author ruoyi
  */
 public class ExcelUtil<T>
@@ -116,12 +118,12 @@ public class ExcelUtil<T>
      * 统计列表
      */
     private Map<Integer, Double> statistics = new HashMap<Integer, Double>();
-    
+
     /**
      * 数字格式
      */
     private static final DecimalFormat DOUBLE_FORMAT = new DecimalFormat("######0.00");
-    
+
     /**
      * 实体对象
      */
@@ -147,7 +149,7 @@ public class ExcelUtil<T>
 
     /**
      * 对excel表单默认第一个索引名转换成list
-     * 
+     *
      * @param is 输入流
      * @return 转换后集合
      */
@@ -158,7 +160,7 @@ public class ExcelUtil<T>
 
     /**
      * 对excel表单指定表格索引名转换成list
-     * 
+     *
      * @param sheetName 表格索引名
      * @param is 输入流
      * @return 转换后集合
@@ -322,7 +324,7 @@ public class ExcelUtil<T>
 
     /**
      * 对list数据源将其里面的数据导入到excel表单
-     * 
+     *
      * @param list 导出数据集合
      * @param sheetName 工作表的名称
      * @return 结果
@@ -335,7 +337,7 @@ public class ExcelUtil<T>
 
     /**
      * 对list数据源将其里面的数据导入到excel表单
-     * 
+     *
      * @param sheetName 工作表的名称
      * @return 结果
      */
@@ -347,7 +349,7 @@ public class ExcelUtil<T>
 
     /**
      * 对list数据源将其里面的数据导入到excel表单
-     * 
+     *
      * @return 结果
      */
     public AjaxResult exportExcel()
@@ -415,7 +417,7 @@ public class ExcelUtil<T>
 
     /**
      * 填充excel数据
-     * 
+     *
      * @param index 序号
      * @param row 单元格行
      */
@@ -442,7 +444,7 @@ public class ExcelUtil<T>
 
     /**
      * 创建表格样式
-     * 
+     *
      * @param wb 工作薄对象
      * @return 样式列表
      */
@@ -480,7 +482,7 @@ public class ExcelUtil<T>
         headerFont.setColor(IndexedColors.WHITE.getIndex());
         style.setFont(headerFont);
         styles.put("header", style);
-        
+
         style = wb.createCellStyle();
         style.setAlignment(HorizontalAlignment.CENTER);
         style.setVerticalAlignment(VerticalAlignment.CENTER);
@@ -524,7 +526,7 @@ public class ExcelUtil<T>
 
     /**
      * 设置单元格信息
-     * 
+     *
      * @param value 单元格值
      * @param attr 注解相关
      * @param cell 单元格信息
@@ -552,7 +554,7 @@ public class ExcelUtil<T>
             }
         }
     }
-    
+
     /**
      * 获取画布
      */
@@ -667,7 +669,7 @@ public class ExcelUtil<T>
 
     /**
      * 设置 POI XSSFSheet 单元格提示
-     * 
+     *
      * @param sheet 表单
      * @param promptTitle 提示标题
      * @param promptContent 提示内容
@@ -690,7 +692,7 @@ public class ExcelUtil<T>
 
     /**
      * 设置某些列的值只能输入预制的数据,显示下拉框.
-     * 
+     *
      * @param sheet 要设置的sheet.
      * @param textlist 下拉框显示的内容
      * @param firstRow 开始行
@@ -724,7 +726,7 @@ public class ExcelUtil<T>
 
     /**
      * 解析导出值 0=男,1=女,2=未知
-     * 
+     *
      * @param propertyValue 参数值
      * @param converterExp 翻译注解
      * @param separator 分隔符
@@ -761,7 +763,7 @@ public class ExcelUtil<T>
 
     /**
      * 反向解析值 男=0,女=1,未知=2
-     * 
+     *
      * @param propertyValue 参数值
      * @param converterExp 翻译注解
      * @param separator 分隔符
@@ -795,10 +797,10 @@ public class ExcelUtil<T>
         }
         return StringUtils.stripEnd(propertyString.toString(), separator);
     }
-    
+
     /**
      * 解析字典值
-     * 
+     *
      * @param dictValue 字典值
      * @param dictType 字典类型
      * @param separator 分隔符
@@ -811,7 +813,7 @@ public class ExcelUtil<T>
 
     /**
      * 反向解析值字典值
-     * 
+     *
      * @param dictLabel 字典标签
      * @param dictType 字典类型
      * @param separator 分隔符
@@ -821,7 +823,7 @@ public class ExcelUtil<T>
     {
         return DictUtils.getDictValue(dictType, dictLabel, separator);
     }
-    
+
     /**
      * 合计统计信息
      */
@@ -858,7 +860,7 @@ public class ExcelUtil<T>
             cell = row.createCell(0);
             cell.setCellStyle(styles.get("total"));
             cell.setCellValue("合计");
-            
+
             for (Integer key : keys)
             {
                 cell = row.createCell(key);
@@ -874,13 +876,16 @@ public class ExcelUtil<T>
      */
     public String encodingFilename(String filename)
     {
-        filename = UUID.randomUUID().toString() + "_" + filename + ".xlsx";
+//        filename = UUID.randomUUID().toString() + "_" + filename + ".xlsx";
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String time = dateTimeFormatter.format(LocalDate.now());
+        filename = filename + "_" + time + ".xlsx";
         return filename;
     }
 
     /**
      * 获取下载路径
-     * 
+     *
      * @param filename 文件名称
      */
     public String getAbsoluteFile(String filename)
@@ -896,7 +901,7 @@ public class ExcelUtil<T>
 
     /**
      * 获取bean中的属性值
-     * 
+     *
      * @param vo 实体对象
      * @param field 字段
      * @param excel 注解
@@ -927,7 +932,7 @@ public class ExcelUtil<T>
 
     /**
      * 以类的属性的get方法方法形式获取值
-     * 
+     *
      * @param o
      * @param name
      * @return value
@@ -976,7 +981,7 @@ public class ExcelUtil<T>
         this.fields = this.fields.stream().sorted(Comparator.comparing(objects -> ((Excel) objects[1]).sort())).collect(Collectors.toList());
         this.maxHeight = getRowHeight();
     }
-    
+
     /**
      * 根据注解获取最大行高
      */
@@ -1012,7 +1017,7 @@ public class ExcelUtil<T>
 
     /**
      * 创建工作表
-     * 
+     *
      * @param sheetNo sheet数量
      * @param index 序号
      */
@@ -1033,7 +1038,7 @@ public class ExcelUtil<T>
 
     /**
      * 获取单元格值
-     * 
+     *
      * @param row 获取的行
      * @param column 获取单元格列号
      * @return 单元格值

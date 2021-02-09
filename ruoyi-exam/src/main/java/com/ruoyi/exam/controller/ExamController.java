@@ -60,7 +60,10 @@ public class ExamController extends BaseController
     {
         List<Exam> list = examService.selectExamList(exam);
         ExcelUtil<Exam> util = new ExcelUtil<Exam>(Exam.class);
-        return util.exportExcel(list, "exam_manage");
+//        return util.exportExcel(list, "exam_manage");
+//        return util.exportExcel(list, exam.getExamProject() + "考试信息表");
+        return util.exportExcel(list, exam.getExamProject() + "考试信息表");
+
     }
 
     @Log(title = "用户管理", businessType = BusinessType.IMPORT)

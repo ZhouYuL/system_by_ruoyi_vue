@@ -33,7 +33,7 @@ public class Exam extends BaseEntity
     private String examProject;
 
     /** 学生ID */
-    @Excel(name = "学生ID")
+    @Excel(name = "学生ID",sort = 1)
     private Long userId;
 
     /** 学生姓名 */
@@ -41,11 +41,11 @@ public class Exam extends BaseEntity
     private String userName;
 
     /** 性别 0=男生,1=女生,2=未知 */
-    @Excel(name = "性别",readConverterExp="0=男生,1=女生,2=未知", prompt="请填对应的数字0.男生1.女生2.未知")
+    @Excel(name = "性别",readConverterExp="0=男生,1=女生,2=未知")
     private String sex;
 
     /** 是否缺考 0=缺考,1=不缺考,2=未知 */
-    @Excel(name = "是否缺考",readConverterExp="0=缺考,1=不缺考,2=未知", prompt="请填对应的数字0.缺考1.不缺考2.未知")
+    @Excel(name = "是否缺考",readConverterExp="0=缺考,1=不缺考,2=未知")
     private String isMiss;
 
     /** 成绩 */
@@ -58,7 +58,7 @@ public class Exam extends BaseEntity
     private Date examTime;
 
     /** 是否及格 0=不及格,1=及格,2=未知 */
-    @Excel(name = "是否及格",readConverterExp="0=不及格,1=及格,2=未知", prompt="请填对应的数字0.不及格1.及格2.未知")
+    @Excel(name = "是否及格",readConverterExp="0=不及格,1=及格,2=未知")
     private String isFail;
 
     public void setExamId(Long examId)

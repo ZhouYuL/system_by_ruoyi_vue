@@ -146,13 +146,13 @@
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="exam_manageList" @selection-change="handleSelectionChange">
+    <el-table v-loading="loading" :data="exam_manageList" @selection-change="handleSelectionChange" :default-sort = "{prop: 'userId', order: 'ascending'}">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="序号" type="index" align="center" width="100" />
       <!-- <el-table-column label="序号" align="center" prop="examId" /> -->
       <el-table-column label="学期" align="center" prop="examSemester" :formatter="examSemesterFormat" />
       <el-table-column label="课程名" align="center" prop="examProject" />
-      <el-table-column label="学生ID" align="center" prop="userId" />
+      <el-table-column label="学生ID" align="center" prop="userId" sortable	/>
       <el-table-column label="学生姓名" align="center" prop="userName" />
       <el-table-column label="性别" align="center" prop="sex" :formatter="sexFormat" />
       <el-table-column label="是否缺考" align="center" prop="isMiss" :formatter="isMissFormat" />

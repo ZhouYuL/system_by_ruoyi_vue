@@ -134,7 +134,7 @@ public class ExamServiceImpl implements IExamService
                 // 根绝userId验证这张表是否存在这个用户
                 Exam e = examMapper.selectExamByUserId(exam.getUserId());
 //                System.out.println(e);
-                // 如果不存在，则插入新数据
+                // 如果表中不存在此信息，则插入新数据
                 if (StringUtils.isNull(e))
                 {
                     System.out.println(indexId);
@@ -152,7 +152,7 @@ public class ExamServiceImpl implements IExamService
                     successNum++;
                     successMsg.append("<br/>" + successNum + "、考试信息 " + exam.getUserName() + " 更新成功");
                 }
-                // 如果不存在并且不允许更新，则提示已存在该数据
+                // 如果存在并且不允许更新，则提示已存在该数据
                 else
                 {
                     failureNum++;
@@ -160,9 +160,9 @@ public class ExamServiceImpl implements IExamService
                 }
             }catch (Exception e)
             {
-                failureNum++;
-                String msg = "<br/>" + failureNum + "、考试信息 " + exam.getUserName() + " 导入失败：";
-                failureMsg.append(msg + e.getMessage());
+//                failureNum++;
+//                String msg = "<br/>" + failureNum + "、考试信息 " + exam.getUserName() + " 导入失败：";
+//                failureMsg.append(msg + e.getMessage());
 //                failureMsg.append(e.getMessage());
             }
         }
