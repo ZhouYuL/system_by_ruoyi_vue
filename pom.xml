@@ -194,6 +194,13 @@
                 <version>${ruoyi.version}</version>
             </dependency>
 
+            <!-- 课群管理系统模块 -->
+            <dependency>
+                <groupId>com.ruoyi</groupId>
+                <artifactId>ruoyi-group</artifactId>
+                <version>${ruoyi.version}</version>
+            </dependency>
+
             <!-- 通用工具-->
             <dependency>
                 <groupId>com.ruoyi</groupId>
@@ -211,6 +218,7 @@
         <module>ruoyi-quartz</module>
         <module>ruoyi-generator</module>
         <module>ruoyi-exam</module>
+        <module>ruoyi-group</module>
         <module>ruoyi-common</module>
     </modules>
     <packaging>pom</packaging>

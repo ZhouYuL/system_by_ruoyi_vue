@@ -79,6 +79,12 @@
             <artifactId>ruoyi-exam</artifactId>
         </dependency>
 
+        <!-- 课群管理系统模块 -->
+        <dependency>
+            <groupId>com.ruoyi</groupId>
+            <artifactId>ruoyi-group</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>
