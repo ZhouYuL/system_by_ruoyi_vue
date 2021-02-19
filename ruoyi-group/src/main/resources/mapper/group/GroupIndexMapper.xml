@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.group.mapper.GroupIndexMapper">
+    
+    <resultMap type="GroupIndex" id="GroupIndexResult">
+        <result property="groupId"    column="group_id"    />
+        <result property="groupType"    column="group_type"    />
+        <result property="groupLeader"    column="group_leader"    />
+        <result property="groupSemester"    column="group_semester"    />
+        <result property="groupProfession"    column="group_profession"    />
+    </resultMap>
+
+    <sql id="selectGroupIndexVo">
+        select group_id, group_type, group_leader, group_semester, group_profession from group_index
+    </sql>
+
+    <select id="selectGroupIndexList" parameterType="GroupIndex" resultMap="GroupIndexResult">
+        <include refid="selectGroupIndexVo"/>
+        <where>  
+            <if test="groupType != null  and groupType != ''"> and group_type like concat('%', #{groupType}, '%')</if>
+            <if test="groupLeader != null  and groupLeader != ''"> and group_leader like concat('%', #{groupLeader}, '%')</if>
+            <if test="groupSemester != null  and groupSemester != ''"> and group_semester = #{groupSemester}</if>
+            <if test="groupProfession != null  and groupProfession != ''"> and group_profession like concat('%', #{groupProfession}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectGroupIndexById" parameterType="Long" resultMap="GroupIndexResult">
+        <include refid="selectGroupIndexVo"/>
+        where group_id = #{groupId}
+    </select>
+        
+    <insert id="insertGroupIndex" parameterType="GroupIndex" useGeneratedKeys="true" keyProperty="groupId">
+        insert into group_index
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="groupType != null and groupType != ''">group_type,</if>
+            <if test="groupLeader != null and groupLeader != ''">group_leader,</if>
+            <if test="groupSemester != null and groupSemester != ''">group_semester,</if>
+            <if test="groupProfession != null">group_profession,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="groupType != null and groupType != ''">#{groupType},</if>
+            <if test="groupLeader != null and groupLeader != ''">#{groupLeader},</if>
+            <if test="groupSemester != null and groupSemester != ''">#{groupSemester},</if>
+            <if test="groupProfession != null">#{groupProfession},</if>
+         </trim>
+    </insert>
+
+    <update id="updateGroupIndex" parameterType="GroupIndex">
+        update group_index
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="groupType != null and groupType != ''">group_type = #{groupType},</if>
+            <if test="groupLeader != null and groupLeader != ''">group_leader = #{groupLeader},</if>
+            <if test="groupSemester != null and groupSemester != ''">group_semester = #{groupSemester},</if>
+            <if test="groupProfession != null">group_profession = #{groupProfession},</if>
+        </trim>
+        where group_id = #{groupId}
+    </update>
+
+    <delete id="deleteGroupIndexById" parameterType="Long">
+        delete from group_index where group_id = #{groupId}
+    </delete>
+
+    <delete id="deleteGroupIndexByIds" parameterType="String">
+        delete from group_index where group_id in 
+        <foreach item="groupId" collection="array" open="(" separator="," close=")">
+            #{groupId}
+        </foreach>
+    </delete>
+</mapper>
