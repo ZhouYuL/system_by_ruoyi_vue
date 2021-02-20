@@ -17,6 +17,22 @@ export function getGroup_index(groupId) {
   })
 }
 
+// 查询角色id=103的所有userId
+export function getUserIdByRoleId(roleId) {
+  return request({
+    url: '/group/group_index/id/' + roleId,
+    method: 'get'
+  })
+}
+
+// 查询相关专业
+export function getDept(roleId) {
+  return request({
+    url: '/group/group_index/dept/' + roleId,
+    method: 'get'
+  })
+}
+
 // 新增课群管理首页
 export function addGroup_index(data) {
   return request({

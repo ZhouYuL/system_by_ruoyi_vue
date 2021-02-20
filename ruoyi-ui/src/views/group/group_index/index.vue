@@ -10,7 +10,7 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="课群负责人" prop="groupLeader" style="width:300px" label-width="95px">
+      <!-- <el-form-item label="课群负责人" prop="groupLeader" style="width:300px" label-width="95px">
         <el-input
           v-model="queryParams.groupLeader"
           placeholder="请输入课群负责人"
@@ -18,6 +18,16 @@
           size="small"
           @keyup.enter.native="handleQuery"
         />
+      </el-form-item> -->
+      <el-form-item label="课群负责人" prop="groupLeader" style="width:300px" label-width="95px">
+        <el-select v-model="queryParams.groupLeader" placeholder="请选择课群负责人" clearable size="small">
+          <el-option
+            v-for="item in groupLeaderOptions"
+            :key="item"
+            :label="item"
+            :value="item">
+          </el-option>
+        </el-select>
       </el-form-item>
       <el-form-item label="学期" prop="groupSemester">
         <el-select v-model="queryParams.groupSemester" placeholder="请选择学期" clearable size="small">
@@ -30,13 +40,21 @@
         </el-select>
       </el-form-item>
       <el-form-item label="专业" prop="groupProfession">
-        <el-input
+        <!-- <el-input
           v-model="queryParams.groupProfession"
           placeholder="请输入专业"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
-        />
+        /> -->
+        <el-select v-model="queryParams.groupProfession" placeholder="请输入专业" clearable size="small">
+          <el-option
+            v-for="item in groupProfessionOptions"
+            :key="item"
+            :label="item"
+            :value="item">
+          </el-option>
+        </el-select>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -92,7 +110,8 @@
 
     <el-table v-loading="loading" :data="group_indexList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="课群序号" align="center" prop="groupId" />
+      <el-table-column label="课群序号" type="index" align="center" width="120" />
+      <!-- <el-table-column label="课群序号" align="center" prop="groupId" /> -->
       <el-table-column label="课群名称" align="center" prop="groupType" />
       <el-table-column label="课群负责人" align="center" prop="groupLeader" />
       <el-table-column label="学期" align="center" prop="groupSemester" :formatter="groupSemesterFormat" />
@@ -132,8 +151,17 @@
           <el-input v-model="form.groupType" placeholder="请输入课群名称" />
         </el-form-item>
         <el-form-item label="课群负责人" prop="groupLeader">
-          <el-input v-model="form.groupLeader" placeholder="请输入课群负责人" />
+          <!-- <el-input v-model="form.groupLeader" placeholder="请输入课群负责人" /> -->
+          <el-select v-model="form.groupLeader" placeholder="请选择课群负责人">
+            <el-option
+              v-for="item in groupLeaderOptions"
+              :key="item"
+              :label="item"
+              :value="item">
+            </el-option>
+          </el-select>
         </el-form-item>
+        
         <el-form-item label="学期" prop="groupSemester">
           <el-select v-model="form.groupSemester" placeholder="请选择学期">
             <el-option
@@ -145,7 +173,15 @@
           </el-select>
         </el-form-item>
         <el-form-item label="专业" prop="groupProfession">
-          <el-input v-model="form.groupProfession" placeholder="请输入专业" />
+          <!-- <el-input v-model="form.groupProfession" placeholder="请输入专业" /> -->
+          <el-select v-model="form.groupProfession" placeholder="请输入专业">
+            <el-option
+              v-for="item in groupProfessionOptions"
+              :key="item"
+              :label="item"
+              :value="item">
+            </el-option>
+          </el-select>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -157,7 +193,7 @@
 </template>
 
 <script>
-import { listGroup_index, getGroup_index, delGroup_index, addGroup_index, updateGroup_index, exportGroup_index } from "@/api/group/group_index";
+import { listGroup_index, getGroup_index, getUserIdByRoleId, getDept, delGroup_index, addGroup_index, updateGroup_index, exportGroup_index } from "@/api/group/group_index";
 
 export default {
   name: "Group_index",
@@ -185,6 +221,10 @@ export default {
       open: false,
       // 学期字典
       groupSemesterOptions: [],
+      // 课群负责人
+      groupLeaderOptions: [],
+      // 专业
+      groupProfessionOptions: [],
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -214,6 +254,15 @@ export default {
     this.getList();
     this.getDicts("exam_semester").then(response => {
       this.groupSemesterOptions = response.data;
+    });
+    var roleId = 103;
+    getUserIdByRoleId(roleId).then(response => {
+      console.log(response.data);
+      this.groupLeaderOptions = response.data;
+    });
+    getDept(roleId).then(response => {
+      console.log(response.data);
+      this.groupProfessionOptions = response.data;
     });
   },
   methods: {
@@ -266,7 +315,7 @@ export default {
     handleAdd() {
       this.reset();
       this.open = true;
-      this.title = "添加课群管理首页";
+      this.title = "添加课群信息";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
@@ -275,7 +324,7 @@ export default {
       getGroup_index(groupId).then(response => {
         this.form = response.data;
         this.open = true;
-        this.title = "修改课群管理首页";
+        this.title = "修改课群信息";
       });
     },
     /** 提交按钮 */
@@ -283,6 +332,7 @@ export default {
       this.$refs["form"].validate(valid => {
         if (valid) {
           if (this.form.groupId != null) {
+            // console.log(this.form);
             updateGroup_index(this.form).then(response => {
               this.msgSuccess("修改成功");
               this.open = false;
@@ -301,7 +351,7 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const groupIds = row.groupId || this.ids;
-      this.$confirm('是否确认删除课群管理首页编号为"' + groupIds + '"的数据项?', "警告", {
+      this.$confirm('是否确认删除课群编号为"' + groupIds + '"的数据项?', "警告", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning"
@@ -315,7 +365,7 @@ export default {
     /** 导出按钮操作 */
     handleExport() {
       const queryParams = this.queryParams;
-      this.$confirm('是否确认导出所有课群管理首页数据项?', "警告", {
+      this.$confirm('是否确认导出所有课群信息数据项?', "警告", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning"
