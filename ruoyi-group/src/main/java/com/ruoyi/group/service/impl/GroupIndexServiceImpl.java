@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.ruoyi.common.core.domain.entity.SysDept;
 import com.ruoyi.common.core.domain.entity.SysUser;
+import com.ruoyi.group.domain.Course;
+import com.ruoyi.group.mapper.CourseMapper;
 import com.ruoyi.system.domain.SysUserRole;
 import com.ruoyi.system.mapper.SysDeptMapper;
 import com.ruoyi.system.mapper.SysUserMapper;
@@ -34,6 +36,9 @@ public class GroupIndexServiceImpl implements IGroupIndexService
 
     @Autowired
     private SysDeptMapper deptMapper;
+
+    @Autowired
+    private CourseMapper courseMapper;
 
     /**
      * 查询课群管理首页
@@ -130,5 +135,15 @@ public class GroupIndexServiceImpl implements IGroupIndexService
     public List<SysDept> selectDept(){
         return deptMapper.selectDept();
     }
+
+    /**
+     *  查询课程
+     * @return
+     */
+    @Override
+    public List<Course> selectCourse() {
+        return courseMapper.selectCourse();
+    }
+
 
 }

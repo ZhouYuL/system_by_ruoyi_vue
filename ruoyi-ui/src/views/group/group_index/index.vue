@@ -112,7 +112,13 @@
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="课群序号" type="index" align="center" width="120" />
       <!-- <el-table-column label="课群序号" align="center" prop="groupId" /> -->
-      <el-table-column label="课群名称" align="center" prop="groupType" />
+      <el-table-column label="课群名称" align="center" prop="groupType" >
+        <template slot-scope="scope">
+          <router-link :to="'/group/group_info/' + scope.row.groupId" class="link-type">
+            <span>{{ scope.row.groupType }}</span>
+          </router-link>
+        </template>
+      </el-table-column>
       <el-table-column label="课群负责人" align="center" prop="groupLeader" />
       <el-table-column label="学期" align="center" prop="groupSemester" :formatter="groupSemesterFormat" />
       <el-table-column label="专业" align="center" prop="groupProfession" />

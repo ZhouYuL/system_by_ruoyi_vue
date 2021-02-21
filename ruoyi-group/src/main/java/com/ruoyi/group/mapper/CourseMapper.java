@@ -5,15 +5,15 @@ import com.ruoyi.group.domain.Course;
 
 /**
  * 课程管理Mapper接口
- * 
+ *
  * @author 周宇龙
  * @date 2021-02-19
  */
-public interface CourseMapper 
+public interface CourseMapper
 {
     /**
      * 查询课程管理
-     * 
+     *
      * @param courseId 课程管理ID
      * @return 课程管理
      */
@@ -21,7 +21,7 @@ public interface CourseMapper
 
     /**
      * 查询课程管理列表
-     * 
+     *
      * @param course 课程管理
      * @return 课程管理集合
      */
@@ -29,7 +29,7 @@ public interface CourseMapper
 
     /**
      * 新增课程管理
-     * 
+     *
      * @param course 课程管理
      * @return 结果
      */
@@ -37,7 +37,7 @@ public interface CourseMapper
 
     /**
      * 修改课程管理
-     * 
+     *
      * @param course 课程管理
      * @return 结果
      */
@@ -45,7 +45,7 @@ public interface CourseMapper
 
     /**
      * 删除课程管理
-     * 
+     *
      * @param courseId 课程管理ID
      * @return 结果
      */
@@ -53,9 +53,15 @@ public interface CourseMapper
 
     /**
      * 批量删除课程管理
-     * 
+     *
      * @param courseIds 需要删除的数据ID
      * @return 结果
      */
     public int deleteCourseByIds(Long[] courseIds);
+
+    /**
+     *  查询课程
+     * @return
+     */
+    public List<Course> selectCourse();
 }

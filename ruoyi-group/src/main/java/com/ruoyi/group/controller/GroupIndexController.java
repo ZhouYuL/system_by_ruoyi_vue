@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.ruoyi.common.core.domain.entity.SysDept;
 import com.ruoyi.common.core.domain.entity.SysUser;
+import com.ruoyi.group.domain.Course;
 import com.ruoyi.system.domain.SysUserRole;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -119,6 +120,27 @@ public class GroupIndexController extends BaseController
         Long k;
         for(int i = 0;i < list.size();i++){
             j = String.valueOf(list.get(i).getDeptName());
+            deptlist.add(j);
+        }
+        System.out.println(deptlist);
+        return AjaxResult.success(deptlist);
+    }
+
+    /**
+     *  查询专业 getCourse
+     */
+    @PreAuthorize("@ss.hasPermi('group:group_index:query')")
+    @GetMapping(value = "/course/{roleId}")
+    public AjaxResult getCourse(@PathVariable("roleId") Long roleId)
+    {
+        // 1.获取Course对象
+        List<Course> list = groupIndexService.selectCourse();
+        System.out.println(list);
+        // 2.获取每个SYSDept对象的deptName属性，并分装进一个集合中
+        List<String> deptlist = new ArrayList<>();
+        String j = null;
+        for(int i = 0;i < list.size();i++){
+            j = String.valueOf(list.get(i).getCourseName());
             deptlist.add(j);
         }
         System.out.println(deptlist);

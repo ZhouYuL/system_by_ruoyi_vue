@@ -67,3 +67,11 @@ export function exportGroup_index(query) {
     params: query
   })
 }
+
+// 查询课程
+export function getCourse(roleId) {
+  return request({
+    url: '/group/group_index/course/' + roleId,
+    method: 'get'
+  })
+}
