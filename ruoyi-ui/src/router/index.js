@@ -112,6 +112,19 @@ export const constantRoutes = [
     hidden: true,
     children: [
       {
+        path: 'group_message/:groupId(\\d+)',
+        component: (resolve) => require(['@/views/group/group_message/index'], resolve),
+        name: 'Group_message',
+        meta: { title: '课群课程教师信息', icon: '' }
+      }
+    ]
+  },
+  {
+    path: '/group',
+    component: Layout,
+    hidden: true,
+    children: [
+      {
         path: 'group_info/:groupId(\\d+)',
         component: (resolve) => require(['@/views/group/group_info/index'], resolve),
         name: 'Group_info',

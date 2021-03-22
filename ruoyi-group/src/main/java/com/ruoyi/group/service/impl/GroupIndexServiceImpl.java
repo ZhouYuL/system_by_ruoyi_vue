@@ -5,8 +5,9 @@ import java.util.List;
 import com.ruoyi.common.core.domain.entity.SysDept;
 import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.group.domain.Course;
+import com.ruoyi.group.domain.GroupIndexCourse;
 import com.ruoyi.group.mapper.CourseMapper;
-import com.ruoyi.system.domain.SysUserRole;
+import com.ruoyi.group.mapper.GroupIndexCourseMapper;
 import com.ruoyi.system.mapper.SysDeptMapper;
 import com.ruoyi.system.mapper.SysUserMapper;
 import com.ruoyi.system.mapper.SysUserRoleMapper;
@@ -39,6 +40,9 @@ public class GroupIndexServiceImpl implements IGroupIndexService
 
     @Autowired
     private CourseMapper courseMapper;
+
+    @Autowired
+    private GroupIndexCourseMapper indexCourseMapper;
 
     /**
      * 查询课群管理首页
@@ -143,6 +147,51 @@ public class GroupIndexServiceImpl implements IGroupIndexService
     @Override
     public List<Course> selectCourse() {
         return courseMapper.selectCourse();
+    }
+
+    /**
+     * 通过课程名称查询课程ID
+     * @param courseName
+     * @return
+     */
+    @Override
+    public Long selectCourseIdByName(String courseName) {
+        return courseMapper.selectCourseIdByName(courseName);
+    }
+
+    @Override
+    public int deleteCourseById(Long groupId) {
+        return indexCourseMapper.deleteGroupIndexCourseById(groupId);
+    }
+
+    @Override
+    public int updateGroupIndexCourse(GroupIndexCourse indexCourse) {
+        return indexCourseMapper.insertGroupIndexCourse(indexCourse);
+    }
+
+    /**
+     * 通过groupId，获取到group_index_course表中对应的courseId
+     * @param groupId
+     * @return
+     */
+    @Override
+    public List<Long> selectCourseIdByGroupId(Long groupId) {
+        return indexCourseMapper.selectCourseIdByGroupId(groupId);
+    }
+
+    /**
+     * 通过courseId,查询到course表中对应的课程名
+     * @param courseId
+     * @return
+     */
+    @Override
+    public Course selectCourseById(Long courseId) {
+        return courseMapper.selectCourseById(courseId);
+    }
+
+    @Override
+    public List<Long> selectUserIdByRole(Long role_id) {
+        return userRoleMapper.selectUserIdByRole(role_id);
     }
 
 

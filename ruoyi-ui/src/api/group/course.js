@@ -9,6 +9,23 @@ export function listCourse(query) {
   })
 }
 
+// 添加课程时的查询课程列表
+export function listCourse1(query) {
+  return request({
+    url: '/group/course/list/course',
+    method: 'get',
+    params: query
+  })
+}
+
+export function listAllCourse(query) {
+  return request({
+    url: '/group/course/listAll',
+    method: 'get',
+    params: query
+  })
+}
+
 // 查询课程管理详细
 export function getCourse(courseId) {
   return request({

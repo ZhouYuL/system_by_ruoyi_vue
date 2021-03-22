@@ -17,6 +17,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	    select user_id from sys_user_role where role_id=103
 	</select>
 
+	<select id="selectUserIdByRole" resultType="Long">
+	    select user_id from sys_user_role where role_id=#{roleId}
+	</select>
+
 	<select id="countUserRoleByRoleId" resultType="Integer">
 	    select count(1) from sys_user_role where role_id=#{roleId}
 	</select>

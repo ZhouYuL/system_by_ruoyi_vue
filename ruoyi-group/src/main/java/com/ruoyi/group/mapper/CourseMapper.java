@@ -64,4 +64,11 @@ public interface CourseMapper
      * @return
      */
     public List<Course> selectCourse();
+
+    /**
+     * 通过课程名称查询课程ID
+     * @param courseName
+     * @return
+     */
+    public Long selectCourseIdByName(String courseName);
 }

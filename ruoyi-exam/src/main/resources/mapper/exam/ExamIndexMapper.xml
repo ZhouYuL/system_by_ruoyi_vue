@@ -10,10 +10,14 @@
         <result property="examTeacher"    column="exam_teacher"    />
         <result property="examName"    column="exam_name"    />
         <result property="examTime"    column="exam_time"    />
+        <result property="failNum"    column="fail_num"    />
+        <result property="classTotal"    column="class_total"    />
+        <result property="passingRate"    column="passing_rate"    />
+        <result property="creater"    column="creater"    />
     </resultMap>
 
     <sql id="selectExamIndexVo">
-        select index_id, exam_semester, exam_teacher, exam_name, exam_time from exam_index
+        select index_id, exam_semester, exam_teacher, exam_name, exam_time, fail_num, class_total, passing_rate,creater from exam_index
     </sql>
 
     <select id="selectExamIndexList" parameterType="ExamIndex" resultMap="ExamIndexResult">
@@ -23,6 +27,7 @@
             <if test="examTeacher != null  and examTeacher != ''"> and exam_teacher like concat('%', #{examTeacher}, '%')</if>
             <if test="examName != null  and examName != ''"> and exam_name like concat('%', #{examName}, '%')</if>
             <if test="examTime != null "> and exam_time = #{examTime}</if>
+            <if test="creater != null  and creater != ''"> and creater = #{creater}</if>
         </where>
     </select>
 
@@ -43,12 +48,20 @@
             <if test="examTeacher != null">exam_teacher,</if>
             <if test="examName != null and examName != ''">exam_name,</if>
             <if test="examTime != null">exam_time,</if>
+            <if test="failNum != null and failNum != ''">fail_num,</if>
+            <if test="classTotal != null and classTotal != ''">class_total,</if>
+            <if test="passingRate != null">passing_rate,</if>
+            <if test="creater != null">creater,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="examSemester != null and examSemester != ''">#{examSemester},</if>
             <if test="examTeacher != null">#{examTeacher},</if>
             <if test="examName != null and examName != ''">#{examName},</if>
             <if test="examTime != null">#{examTime},</if>
+            <if test="failNum != null and failNum != ''">#{failNum},</if>
+            <if test="classTotal != null and classTotal != ''">#{classTotal},</if>
+            <if test="passingRate != null">#{passingRate},</if>
+            <if test="creater != null">#{creater},</if>
         </trim>
     </insert>
 
@@ -59,6 +72,9 @@
             <if test="examTeacher != null">exam_teacher = #{examTeacher},</if>
             <if test="examName != null and examName != ''">exam_name = #{examName},</if>
             <if test="examTime != null">exam_time = #{examTime},</if>
+            <if test="failNum != null and failNum != ''">fail_num = #{failNum},</if>
+            <if test="classTotal != null and classTotal != ''">class_total = #{classTotal},</if>
+            <if test="passingRate != null">passing_rate = #{passingRate}</if>
         </trim>
         where index_id = #{indexId}
     </update>

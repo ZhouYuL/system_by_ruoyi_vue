@@ -59,3 +59,10 @@ export function exportExam_index(query) {
     params: query
   })
 }
+
+export function importTemplate() {
+  return request({
+    url: '/exam/exam_index/importTemplate',
+    method: 'get'
+  })
+  }

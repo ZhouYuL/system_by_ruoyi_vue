@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.group.mapper.GroupIndexCourseMapper">
+
+    <resultMap type="GroupIndexCourse" id="GroupIndexCourseResult">
+        <result property="groupId"    column="group_id"    />
+        <result property="courseId"    column="course_id"    />
+        <result property="courseName"    column="course_name"    />
+    </resultMap>
+
+    <sql id="selectGroupIndexCourseVo">
+        select g.group_id, g.course_id, c.course_name from group_index_course g left join course c on g.course_id=c.course_id
+    </sql>
+
+    <select id="selectGroupIndexCourseList" parameterType="GroupIndexCourse" resultMap="GroupIndexCourseResult">
+        <include refid="selectGroupIndexCourseVo"/>
+        <where>
+            <if test="groupId != null "> and g.group_id = #{groupId}</if>
+            <if test="courseId != null "> and g.course_id = #{courseId}</if>
+            <if test="courseName != null "> and c.course_name like concat('%', #{courseName}, '%') </if>
+        </where>
+    </select>
+
+    <select id="selectGroupIndexCourseById" parameterType="Long" resultMap="GroupIndexCourseResult">
+        <include refid="selectGroupIndexCourseVo"/>
+        where group_id = #{groupId}
+    </select>
+
+    <select id="selectCourseIdByGroupId" parameterType="Long" resultType="Long">
+        select course_id
+        from group_index_course
+        where group_id = #{groupId}
+    </select>
+
+    <insert id="insertGroupIndexCourse" parameterType="GroupIndexCourse">
+        insert into group_index_course
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="groupId != null">group_id,</if>
+            <if test="courseId != null">course_id,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="groupId != null">#{groupId},</if>
+            <if test="courseId != null">#{courseId},</if>
+        </trim>
+    </insert>
+
+    <delete id="deleteGroupIndexCourseById" parameterType="Long">
+        delete from group_index_course where course_id = #{courseId}
+    </delete>
+
+    <delete id="deleteGroupIndexCourseByIds" parameterType="String">
+        delete from group_index_course where course_id in
+        <foreach item="courseId" collection="array" open="(" separator="," close=")">
+            #{courseId}
+        </foreach>
+    </delete>
+</mapper>

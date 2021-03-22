@@ -69,9 +69,35 @@ export function exportGroup_index(query) {
 }
 
 // 查询课程
-export function getCourse(roleId) {
+export function getCourse(groupId) {
   return request({
-    url: '/group/group_index/course/' + roleId,
+    url: '/group/group_index/course/' + groupId,
     method: 'get'
+  })
+}
+
+// 更新group_index_course数据库
+export function updateIndexCourse(data) {
+  return request({
+    url: '/group/group_index/IndexCourse/',
+    method: 'put',
+    data: data
+  })
+}
+
+// 查询上次提交的课程
+export function getLastCourse(groupId) {
+  return request({
+    url: '/group/group_index/Lastcourse/' + groupId,
+    method: 'get'
+  })
+}
+
+// 查询所有老师
+export function listTeacher(query) {
+  return request({
+    url: '/group/group_index/teacher',
+    method: 'get',
+    params: query
   })
 }

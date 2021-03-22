@@ -22,6 +22,9 @@ public class Course extends BaseEntity
     @Excel(name = "课程名称")
     private String courseName;
 
+    /** 部门ID */
+    private Long deptId;
+
     public void setCourseId(Long courseId) 
     {
         this.courseId = courseId;
@@ -39,6 +42,14 @@ public class Course extends BaseEntity
     public String getCourseName() 
     {
         return courseName;
+    }
+
+    public Long getDeptId() {
+        return deptId;
+    }
+
+    public void setDeptId(Long deptId) {
+        this.deptId = deptId;
     }
 
     @Override

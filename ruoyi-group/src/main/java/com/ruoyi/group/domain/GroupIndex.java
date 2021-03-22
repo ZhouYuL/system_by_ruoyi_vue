@@ -34,6 +34,11 @@ public class GroupIndex extends BaseEntity
     @Excel(name = "专业")
     private String groupProfession;
 
+    /** 创建人 */
+    private Long creater;
+
+    private Long deptId;
+
     public void setGroupId(Long groupId) 
     {
         this.groupId = groupId;
@@ -78,6 +83,22 @@ public class GroupIndex extends BaseEntity
     public String getGroupProfession() 
     {
         return groupProfession;
+    }
+
+    public Long getCreater() {
+        return creater;
+    }
+
+    public void setCreater(Long creater) {
+        this.creater = creater;
+    }
+
+    public Long getDeptId() {
+        return deptId;
+    }
+
+    public void setDeptId(Long deptId) {
+        this.deptId = deptId;
     }
 
     @Override

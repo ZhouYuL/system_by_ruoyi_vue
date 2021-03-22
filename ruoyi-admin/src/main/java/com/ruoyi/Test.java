@@ -2,6 +2,7 @@ package com.ruoyi;
 
 //import com.ruoyi.test.TestService;
 
+import com.ruoyi.test.TestProjectService;
 import com.ruoyi.test.TestService;
 
 /**
@@ -12,6 +13,8 @@ import com.ruoyi.test.TestService;
 public class Test {
     public static void main(String[] args) {
 //        System.out.println(new TestService().helloTest());
-        System.out.println(new TestService().helloTest());
+//        System.out.println(new TestService().helloTest());
+        System.out.println(new TestProjectService().helloTest());
+
     }
 }

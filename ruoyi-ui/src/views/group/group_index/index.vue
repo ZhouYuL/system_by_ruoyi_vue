@@ -114,13 +114,16 @@
       <!-- <el-table-column label="课群序号" align="center" prop="groupId" /> -->
       <el-table-column label="课群名称" align="center" prop="groupType" >
         <template slot-scope="scope">
+          <!-- <router-link :to="'/group/group_info/' + scope.row.groupId" class="link-type">
+            <span>{{ scope.row.groupType }}</span>
+          </router-link> -->
           <router-link :to="'/group/group_info/' + scope.row.groupId" class="link-type">
             <span>{{ scope.row.groupType }}</span>
           </router-link>
         </template>
       </el-table-column>
       <el-table-column label="课群负责人" align="center" prop="groupLeader" />
-      <el-table-column label="学期" align="center" prop="groupSemester" :formatter="groupSemesterFormat" />
+      <!-- <el-table-column label="学期" align="center" prop="groupSemester" :formatter="groupSemesterFormat" /> -->
       <el-table-column label="专业" align="center" prop="groupProfession" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">

@@ -6,7 +6,7 @@ import com.ruoyi.common.core.domain.entity.SysDept;
 import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.group.domain.Course;
 import com.ruoyi.group.domain.GroupIndex;
-import com.ruoyi.system.domain.SysUserRole;
+import com.ruoyi.group.domain.GroupIndexCourse;
 
 /**
  * 课群管理首页Service接口
@@ -89,4 +89,46 @@ public interface IGroupIndexService
      * @return
      */
     public List<Course> selectCourse();
+
+    /**
+     * 通过课程名称查询课程ID
+     * @param courseName
+     * @return
+     */
+    public Long selectCourseIdByName(String courseName);
+
+    /**
+     * 通过groupID删除Group_index_course表中的数据
+     * @param groupId
+     * @return
+     */
+    public int deleteCourseById(Long groupId);
+
+    /**
+     * 修改GroupIndexCourse表
+     * @param indexCourse
+     * @return
+     */
+    public int updateGroupIndexCourse(GroupIndexCourse indexCourse);
+
+    /**
+     * 通过groupId，获取到group_index_course表中对应的courseId
+     * @param groupId
+     * @return
+     */
+    public List<Long> selectCourseIdByGroupId(Long groupId);
+
+    /**
+     * 通过courseId,查询到course表中对应的课程名
+     * @param courseId
+     * @return
+     */
+    public Course selectCourseById(Long courseId);
+
+    /**
+     * 查询所有role_id=104的user_id
+     * @param role_id
+     * @return
+     */
+    public List<Long> selectUserIdByRole(Long role_id);
 }

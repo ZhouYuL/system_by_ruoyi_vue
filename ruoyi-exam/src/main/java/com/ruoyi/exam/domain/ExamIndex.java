@@ -39,6 +39,20 @@ public class ExamIndex extends BaseEntity
     @Excel(name = "考试时间", width = 30, dateFormat = "yyyy-MM-dd")
     private Date examTime;
 
+    /** 不及格人数 */
+    @Excel(name = "不及格人数")
+    private String failNum;
+
+    /** 班级总人数 */
+    @Excel(name = "班级总人数")
+    private String classTotal;
+
+    /** 及格率 */
+    @Excel(name = "及格率")
+    private String passingRate;
+
+    private Long creater;
+
     private List<Exam> exams;
 
     public void setIndexId(Long indexId)
@@ -87,6 +101,46 @@ public class ExamIndex extends BaseEntity
         return examTime;
     }
 
+    public String getFailNum() {
+        return failNum;
+    }
+
+    public void setFailNum(String failNum) {
+        this.failNum = failNum;
+    }
+
+    public String getClassTotal() {
+        return classTotal;
+    }
+
+    public void setClassTotal(String classTotal) {
+        this.classTotal = classTotal;
+    }
+
+    public String getPassingRate() {
+        return passingRate;
+    }
+
+    public void setPassingRate(String passingRate) {
+        this.passingRate = passingRate;
+    }
+
+    public Long getCreater() {
+        return creater;
+    }
+
+    public void setCreater(Long creater) {
+        this.creater = creater;
+    }
+
+    public List<Exam> getExams() {
+        return exams;
+    }
+
+    public void setExams(List<Exam> exams) {
+        this.exams = exams;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
@@ -95,6 +149,9 @@ public class ExamIndex extends BaseEntity
                 .append("examTeacher", getExamTeacher())
                 .append("examName", getExamName())
                 .append("examTime", getExamTime())
+                .append("failNum", getFailNum())
+                .append("classTotal", getClassTotal())
+                .append("passingRate", getPassingRate())
                 .toString();
     }
 }

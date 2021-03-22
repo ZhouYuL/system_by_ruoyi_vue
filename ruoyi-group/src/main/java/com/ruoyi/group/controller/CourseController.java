@@ -1,6 +1,11 @@
 package com.ruoyi.group.controller;
 
 import java.util.List;
+
+import com.ruoyi.common.core.domain.entity.SysUser;
+import com.ruoyi.common.core.domain.model.LoginUser;
+import com.ruoyi.common.utils.ServletUtils;
+import com.ruoyi.framework.web.service.TokenService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +27,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
 
 /**
  * 课程管理Controller
- * 
+ *
  * @author 周宇龙
  * @date 2021-02-19
  */
@@ -32,6 +37,8 @@ public class CourseController extends BaseController
 {
     @Autowired
     private ICourseService courseService;
+    @Autowired
+    private TokenService tokenService;
 
     /**
      * 查询课程管理列表
@@ -40,9 +47,44 @@ public class CourseController extends BaseController
     @GetMapping("/list")
     public TableDataInfo list(Course course)
     {
+        // 1.获取当前登录用户信息
+        LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
+        SysUser user = loginUser.getUser();
+        course.setDeptId(user.getDeptId());
         startPage();
         List<Course> list = courseService.selectCourseList(course);
         return getDataTable(list);
+    }
+
+    /**
+     * 添加课程时的课程列表
+     * @param course
+     * @return
+     */
+    @PreAuthorize("@ss.hasPermi('group:course:list')")
+    @GetMapping("/list/course")
+    public TableDataInfo list1(Course course)
+    {
+        // 1.获取当前登录用户信息
+        LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
+        SysUser user = loginUser.getUser();
+        course.setDeptId(user.getDeptId());
+
+        List<Course> list = courseService.selectCourseList(course);
+        return getDataTable(list);
+    }
+
+    @PreAuthorize("@ss.hasPermi('group:course:listAll')")
+    @GetMapping("/listAll")
+    public AjaxResult listAll(Course course)
+    {
+        // 1.获取当前登录用户信息
+        LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
+        SysUser user = loginUser.getUser();
+        course.setDeptId(user.getDeptId());
+        startPage();
+        List<Course> list = courseService.selectCourseList(course);
+        return AjaxResult.success(list);
     }
 
     /**
@@ -76,6 +118,9 @@ public class CourseController extends BaseController
     @PostMapping
     public AjaxResult add(@RequestBody Course course)
     {
+        LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
+        SysUser user = loginUser.getUser();
+        course.setDeptId(user.getDeptId());
         return toAjax(courseService.insertCourse(course));
     }
 

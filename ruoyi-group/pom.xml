@@ -21,18 +21,14 @@
         <dependency>
             <groupId>com.ruoyi</groupId>
             <artifactId>ruoyi-common</artifactId>
-        </dependency>
-		
-		<!-- admin工具-->
-        <dependency>
-            <groupId>com.ruoyi</groupId>
-            <artifactId>ruoyi-admin</artifactId>
+            <version>3.3.0</version>
         </dependency>
 
         <!-- 核心模块-->
         <dependency>
             <groupId>com.ruoyi</groupId>
             <artifactId>ruoyi-framework</artifactId>
+            <version>3.3.0</version>
         </dependency>
 
     </dependencies>

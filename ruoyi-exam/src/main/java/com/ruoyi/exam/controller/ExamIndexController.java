@@ -24,6 +24,7 @@ import com.ruoyi.exam.domain.ExamIndex;
 import com.ruoyi.exam.service.IExamIndexService;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.common.core.page.TableDataInfo;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 考试信息管理首页Controller
@@ -48,21 +49,21 @@ public class ExamIndexController extends BaseController
     @GetMapping("/list")
     public TableDataInfo list(ExamIndex examIndex)
     {
-        // 获取当前登录用户信息
+        // 获取当前登录考试信息信息
         LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
         SysUser user = loginUser.getUser();
 //        System.out.println(user.toString());
         Long userId = user.getUserId();
         if(userId == 1 || userId == 3){
-            // 当用户为管理员时，所有信息全部显示
+            // 当考试信息为管理员时，所有信息全部显示
             startPage();
             List<ExamIndex> list = examIndexService.selectExamIndexList(examIndex);
             return getDataTable(list);
         }else{
-            // 当用户为任课老师时，获取到该老师的user_name
-            String examTeacher = user.getUserName();
+            // 当考试信息为任课老师时，获取到该老师的user_name
+            examIndex.setCreater(user.getUserId());
             startPage();
-            List<ExamIndex> list = examIndexService.selectExamIndexByName(examTeacher);
+            List<ExamIndex> list = examIndexService.selectExamIndexList(examIndex);
             return getDataTable(list);
 
         }
@@ -103,6 +104,9 @@ public class ExamIndexController extends BaseController
     @PostMapping
     public AjaxResult add(@RequestBody ExamIndex examIndex)
     {
+        LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
+        SysUser user = loginUser.getUser();
+        examIndex.setCreater(user.getUserId());
         return toAjax(examIndexService.insertExamIndex(examIndex));
     }
 
@@ -126,5 +130,23 @@ public class ExamIndexController extends BaseController
     public AjaxResult remove(@PathVariable Long[] indexIds)
     {
         return toAjax(examIndexService.deleteExamIndexByIds(indexIds));
+    }
+
+    @GetMapping("/importTemplate")
+    public AjaxResult importTemplate()
+    {
+        ExcelUtil<ExamIndex> util = new ExcelUtil<ExamIndex>(ExamIndex.class);
+        return util.importTemplateExcel("考试信息数据");
+    }
+
+    @Log(title = "考试信息管理", businessType = BusinessType.IMPORT)
+    @PreAuthorize("@ss.hasPermi('exam:exam_index:import')")
+    @PostMapping("/importData")
+    public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception
+    {
+        ExcelUtil<ExamIndex> util = new ExcelUtil<ExamIndex>(ExamIndex.class);
+        List<ExamIndex> examList = util.importExcel(file.getInputStream());
+        String message = examIndexService.importExam(examList, updateSupport);
+        return AjaxResult.success(message);
     }
 }

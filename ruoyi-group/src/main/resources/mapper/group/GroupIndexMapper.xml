@@ -10,10 +10,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="groupLeader"    column="group_leader"    />
         <result property="groupSemester"    column="group_semester"    />
         <result property="groupProfession"    column="group_profession"    />
+        <result property="creater"    column="creater"    />
+        <result property="deptId"    column="dept_id"    />
     </resultMap>
 
     <sql id="selectGroupIndexVo">
-        select group_id, group_type, group_leader, group_semester, group_profession from group_index
+        select group_id, group_type, group_leader, group_semester, group_profession,creater,dept_id from group_index
     </sql>
 
     <select id="selectGroupIndexList" parameterType="GroupIndex" resultMap="GroupIndexResult">
@@ -23,6 +25,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="groupLeader != null  and groupLeader != ''"> and group_leader like concat('%', #{groupLeader}, '%')</if>
             <if test="groupSemester != null  and groupSemester != ''"> and group_semester = #{groupSemester}</if>
             <if test="groupProfession != null  and groupProfession != ''"> and group_profession like concat('%', #{groupProfession}, '%')</if>
+            <if test="creater != null  and creater != ''"> and creater = #{creater}</if>
+            <if test="deptId != null  and deptId != ''"> and dept_id = #{deptId}</if>
         </where>
     </select>
     
@@ -38,12 +42,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="groupLeader != null and groupLeader != ''">group_leader,</if>
             <if test="groupSemester != null and groupSemester != ''">group_semester,</if>
             <if test="groupProfession != null">group_profession,</if>
+            <if test="creater != null">creater,</if>
+            <if test="deptId != null">dept_id,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="groupType != null and groupType != ''">#{groupType},</if>
             <if test="groupLeader != null and groupLeader != ''">#{groupLeader},</if>
             <if test="groupSemester != null and groupSemester != ''">#{groupSemester},</if>
             <if test="groupProfession != null">#{groupProfession},</if>
+            <if test="creater != null">#{creater},</if>
+            <if test="deptId != null">#{deptId},</if>
          </trim>
     </insert>
 

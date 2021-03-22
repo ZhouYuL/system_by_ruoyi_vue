@@ -66,4 +66,11 @@ public interface SysUserRoleMapper
      * @return 结果
      */
     public List<Long> selectUserIdByRoleId();
+
+    /**
+     *  查询角色id=104的所有userId
+     *
+     * @return 结果
+     */
+    public List<Long> selectUserIdByRole(Long role_id);
 }

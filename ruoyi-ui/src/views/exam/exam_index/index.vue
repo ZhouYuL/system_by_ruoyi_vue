@@ -12,22 +12,39 @@
         </el-select>
       </el-form-item>
       <el-form-item label="任课老师" prop="examTeacher">
-        <el-input
+        <!-- <el-input
           v-model="queryParams.examTeacher"
           placeholder="请输入任课老师"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
-        />
+        /> -->
+
+        <el-select v-model="queryParams.examTeacher" placeholder="请选择任课老师" clearable size="small">
+          <el-option
+            v-for="dict in examTeacherOptions"
+            :key="dict.teacherName"
+            :label="dict.teacherName"
+            :value="dict.teacherName"
+          />
+        </el-select>
       </el-form-item>
       <el-form-item label="课程名称" prop="examName">
-        <el-input
+        <!-- <el-input
           v-model="queryParams.examName"
           placeholder="请输入课程名称"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
-        />
+        /> -->
+        <el-select v-model="queryParams.examName" placeholder="请选择课程名称" clearable size="small">
+          <el-option
+            v-for="dict in examNameOptions"
+            :key="dict.courseName"
+            :label="dict.courseName"
+            :value="dict.courseName"
+          />
+        </el-select>
       </el-form-item>
       <el-form-item label="考试时间" prop="examTime">
         <el-date-picker clearable size="small"
@@ -77,6 +94,16 @@
         >删除</el-button>
       </el-col>
       <el-col :span="1.5">
+            <el-button
+              type="info"
+              plain
+              icon="el-icon-upload2"
+              size="mini"
+              @click="handleImport"
+              v-hasPermi="['exam:exam_index:import']"
+            >导入</el-button>
+          </el-col>
+      <el-col :span="1.5">
         <el-button
           type="warning"
           plain
@@ -96,12 +123,15 @@
       <el-table-column label="学期" align="center" prop="examSemester" :formatter="examSemesterFormat" />
       <el-table-column label="任课老师" align="center" prop="examTeacher" />
       <el-table-column label="课程名称" align="center" prop="examName" :show-overflow-tooltip="true">
-        <template slot-scope="scope">
+        <!-- <template slot-scope="scope">
           <router-link :to="'/exam/exam_manage/' + scope.row.indexId" class="link-type">
             <span>{{ scope.row.examName }}</span>
           </router-link>
-        </template>
+        </template> -->
       </el-table-column>
+      <el-table-column label="不及格人数" align="center" prop="failNum" />
+      <el-table-column label="班级总人数" align="center" prop="classTotal" />
+      <el-table-column label="及格率" align="center" prop="passingRate" />
       <el-table-column label="考试时间" align="center" prop="examTime" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.examTime, '{y}-{m}-{d}') }}</span>
@@ -149,10 +179,35 @@
           </el-select>
         </el-form-item>
         <el-form-item label="任课老师" prop="examTeacher">
-          <el-input v-model="form.examTeacher" placeholder="请输入任课老师" />
+          <el-select v-model="form.examTeacher" placeholder="请选择任课老师" clearable size="small">
+          <el-option
+            v-for="dict in examTeacherOptions"
+            :key="dict.teacherName"
+            :label="dict.teacherName"
+            :value="dict.teacherName"
+          />
+        </el-select>
+          <!-- <el-input v-model="form.examTeacher" placeholder="请输入任课老师" /> -->
         </el-form-item>
         <el-form-item label="课程名称" prop="examName">
-          <el-input v-model="form.examName" placeholder="请输入考试课程名称" />
+          <el-select v-model="form.examName" placeholder="请选择课程名称" clearable size="small">
+          <el-option
+            v-for="dict in examNameOptions"
+            :key="dict.courseName"
+            :label="dict.courseName"
+            :value="dict.courseName"
+          />
+        </el-select>
+          <!-- <el-input v-model="form.examName" placeholder="请输入考试课程名称" /> -->
+        </el-form-item>
+        <el-form-item label="不及格人数" prop="failNum">
+          <el-input type="number" v-model="form.failNum" placeholder="请输入不及格人数" />
+        </el-form-item>
+        <el-form-item label="班级总人数" prop="classTotal">
+          <el-input v-model="form.classTotal" type="number" placeholder="请输入班级总人数" />
+        </el-form-item>
+        <el-form-item label="及格率" prop="passingRate">
+          <el-input v-model="form.passingRate" placeholder="请输入及格率"/>
         </el-form-item>
         <el-form-item label="考试时间" prop="examTime">
           <el-date-picker clearable size="small"
@@ -168,11 +223,44 @@
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
+
+    <el-dialog :title="upload.title" :visible.sync="upload.open" width="400px" append-to-body>
+      <el-upload
+        ref="upload"
+        :limit="1"
+        accept=".xlsx, .xls"
+        :headers="upload.headers"
+        :action="upload.url + '?updateSupport=' + upload.updateSupport"
+        :disabled="upload.isUploading"
+        :on-progress="handleFileUploadProgress"
+        :on-success="handleFileSuccess"
+        :auto-upload="false"
+        drag
+      >
+        <i class="el-icon-upload"></i>
+        <div class="el-upload__text">
+          将文件拖到此处，或
+          <em>点击上传</em>
+        </div>
+        <div class="el-upload__tip" slot="tip">
+          <el-checkbox v-model="upload.updateSupport" />是否更新已经存在的考试数据
+          <el-link type="info" style="font-size:12px" @click="importTemplate">下载模板</el-link>
+        </div>
+        <div class="el-upload__tip" style="color:red" slot="tip">提示：仅允许导入“xls”或“xlsx”格式文件！</div>
+      </el-upload>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="submitFileForm">确 定</el-button>
+        <el-button @click="upload.open = false">取 消</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { listExam_index, getExam_index, delExam_index, addExam_index, updateExam_index, exportExam_index } from "@/api/exam/exam_index";
+import { listExam_index, getExam_index, delExam_index, addExam_index, updateExam_index, exportExam_index,importTemplate } from "@/api/exam/exam_index";
+import { getToken } from "@/utils/auth";
+import {listAllTeacher} from "@/api/group/teacher";
+import {listAllCourse} from "@/api/group/course";
 
 export default {
   name: "Exam_index",
@@ -198,6 +286,8 @@ export default {
       open: false,
       // 学期字典
       examSemesterOptions: [],
+      examTeacherOptions: [],
+      examNameOptions: [],
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -207,6 +297,22 @@ export default {
         examName: null,
         examTime: null
       },
+
+      upload: {
+        // 是否显示弹出层（考试信息导入）
+        open: false,
+        // 弹出层标题（考试信息导入）
+        title: "",
+        // 是否禁用上传
+        isUploading: false,
+        // 是否更新已经存在的考试信息数据
+        updateSupport: 0,
+        // 设置上传的请求头部
+        headers: { Authorization: "Bearer " + getToken() },
+        // 上传的地址
+        url: process.env.VUE_APP_BASE_API + "/exam/exam_index/importData"
+      },
+      
       // 表单参数
       form: {},
       // 表单校验
@@ -225,6 +331,8 @@ export default {
   },
   created() {
     this.getList();
+    this.getListTeacher();
+    this.getListCourse();
     this.getDicts("exam_semester").then(response => {
       this.examSemesterOptions = response.data;
     });
@@ -244,13 +352,28 @@ export default {
       // }, 500);
           
     },
+
+    getListTeacher() {
+      listAllTeacher(this.queryParams).then(response => {
+        this.examTeacherOptions = response.data;
+      })
+    },
+    getListCourse() {
+      listAllCourse(this.queryParams).then(response => {
+        this.examNameOptions = response.data;
+      })
+    },
     // 考试信息状态字典翻译
     // statusFormat(row, column) {
     //   return this.selectDictLabel(this.statusOptions, row.status);
     // },
     // 学期字典翻译
     examSemesterFormat(row, column) {
-      return this.selectDictLabel(this.examSemesterOptions, row.examSemester);
+      var name = this.selectDictLabel(this.examSemesterOptions, row.examSemester);
+      if(name != '') {
+        return name;
+      }
+      return row.examSemester;
     },
     // 取消按钮
     cancel() {
@@ -346,6 +469,33 @@ export default {
         }).then(response => {
           this.download(response.msg);
         })
+    },
+    /** 导入按钮操作 */
+    handleImport() {
+      this.upload.title = "考试信息导入";
+      this.upload.open = true;
+    },
+    /** 下载模板操作 */
+    importTemplate() {
+      importTemplate().then(response => {
+        this.download(response.msg);
+      });
+    },
+    // 文件上传中处理
+    handleFileUploadProgress(event, file, fileList) {
+      this.upload.isUploading = true;
+    },
+    // 文件上传成功处理
+    handleFileSuccess(response, file, fileList) {
+      this.upload.open = false;
+      this.upload.isUploading = false;
+      this.$refs.upload.clearFiles();
+      this.$alert(response.msg, "导入结果", { dangerouslyUseHTMLString: true });
+      this.getList();
+    },
+    // 提交上传文件
+    submitFileForm() {
+      this.$refs.upload.submit();
     }
   }
 };

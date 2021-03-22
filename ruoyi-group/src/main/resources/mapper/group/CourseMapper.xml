@@ -7,16 +7,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <resultMap type="Course" id="CourseResult">
         <result property="courseId"    column="course_id"    />
         <result property="courseName"    column="course_name"    />
+        <result property="deptId"    column="dept_id"    />
     </resultMap>
 
     <sql id="selectCourseVo">
-        select course_id, course_name from course
+        select course_id, course_name, dept_id from course
     </sql>
 
     <select id="selectCourseList" parameterType="Course" resultMap="CourseResult">
         <include refid="selectCourseVo"/>
         <where>
             <if test="courseName != null  and courseName != ''"> and course_name like concat('%', #{courseName}, '%')</if>
+            <if test="deptId != null  and deptId != ''"> and dept_id = #{deptId}</if>
         </where>
     </select>
 
@@ -24,6 +26,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectCourseVo"/>
         <where>
             <if test="courseName != null  and courseName != ''"> and course_name like concat('%', #{courseName}, '%')</if>
+            <if test="deptId != null  and deptId != ''"> and dept_id = #{deptId}</if>
         </where>
     </select>
 
@@ -32,13 +35,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where course_id = #{courseId}
     </select>
 
+    <select id="selectCourseIdByName" parameterType="String" resultType="Long">
+        select course_id from course
+        where course_name = #{courseName}
+    </select>
+
     <insert id="insertCourse" parameterType="Course" useGeneratedKeys="true" keyProperty="courseId">
         insert into course
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="courseName != null and courseName != ''">course_name,</if>
+            <if test="deptId != null  and deptId != ''"> dept_id,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="courseName != null and courseName != ''">#{courseName},</if>
+            <if test="deptId != null  and deptId != ''"> #{deptId}</if>
          </trim>
     </insert>
 

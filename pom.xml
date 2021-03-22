@@ -201,6 +201,13 @@
                 <version>${ruoyi.version}</version>
             </dependency>
 
+            <!-- 毕业设计管理子模块 -->
+            <dependency>
+                <groupId>com.ruoyi</groupId>
+                <artifactId>ruoyi-project</artifactId>
+                <version>${ruoyi.version}</version>
+            </dependency>
+
             <!-- 通用工具-->
             <dependency>
                 <groupId>com.ruoyi</groupId>
@@ -212,14 +219,15 @@
     </dependencyManagement>
 
     <modules>
-        <module>ruoyi-admin</module>
-        <module>ruoyi-framework</module>
+        <module>ruoyi-common</module>
         <module>ruoyi-system</module>
+        <module>ruoyi-framework</module>
+        <module>ruoyi-admin</module>
         <module>ruoyi-quartz</module>
         <module>ruoyi-generator</module>
         <module>ruoyi-exam</module>
         <module>ruoyi-group</module>
-        <module>ruoyi-common</module>
+        <module>ruoyi-project</module>
     </modules>
     <packaging>pom</packaging>
 
