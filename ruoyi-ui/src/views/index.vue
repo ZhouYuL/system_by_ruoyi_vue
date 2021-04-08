@@ -1,5 +1,6 @@
 <template>
   <div class="app-container home">
+    <el-image :src="src" class="img"></el-image>
     <!-- <el-row :gutter="20">
       <el-col :sm="24" :lg="24">
         <blockquote class="text-warning" style="font-size: 14px">
@@ -488,12 +489,15 @@
 </template>
 
 <script>
+import indexImg from '@/assets/logo/index.png'
+
 export default {
   name: "index",
   data() {
     return {
       // 版本号
       version: "3.3.0",
+      src: indexImg
     };
   },
   methods: {
@@ -564,6 +568,11 @@ export default {
       margin-inline-end: 0;
       padding-inline-start: 40px;
     }
+  }
+
+  .img{
+    width: 1300px;
+    height: 620px;
   }
 }
 </style>
