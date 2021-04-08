@@ -11,6 +11,7 @@ import com.ruoyi.framework.web.service.TokenService;
 import com.ruoyi.group.domain.*;
 import com.ruoyi.group.service.ITeacherService;
 import com.ruoyi.system.domain.SysUserRole;
+import com.ruoyi.system.service.ISysUserService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -48,6 +49,9 @@ public class GroupIndexController extends BaseController
     @Autowired
     private TokenService tokenService;
 
+    @Autowired
+    private ISysUserService sysUserService;
+
     /**
      * 查询课群管理首页列表
      */
@@ -58,6 +62,14 @@ public class GroupIndexController extends BaseController
         LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
         SysUser user = loginUser.getUser();
         groupIndex.setDeptId(user.getDeptId());
+
+        Long userId = user.getUserId();
+        // 通过userID获取到roleId
+        Long roleId = sysUserService.selectRoleIdByUserId(userId);
+        // 进行判断
+        if (roleId == 103) {
+            groupIndex.setGroupLeader(user.getNickName());
+        }
         startPage();
         List<GroupIndex> list = groupIndexService.selectGroupIndexList(groupIndex);
         return getDataTable(list);

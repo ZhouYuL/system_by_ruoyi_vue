@@ -19,7 +19,7 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item> -->
-      <el-form-item label="课群负责人" prop="groupLeader" style="width:300px" label-width="95px">
+      <el-form-item label="课群负责人" prop="groupLeader" label-width="85px">
         <el-select v-model="queryParams.groupLeader" placeholder="请选择课群负责人" clearable size="small">
           <el-option
             v-for="item in groupLeaderOptions"

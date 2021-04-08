@@ -64,7 +64,7 @@
 
     <el-table v-loading="loading" :data="courseList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="序号" type="index" align="center" />
+      <el-table-column label="序号" type="index" align="center"  width="300px"/>
       <!-- <el-table-column label="课程序号" align="center" prop="courseId" /> -->
       <el-table-column label="课程名称" align="center" prop="courseName" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">

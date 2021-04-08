@@ -2,6 +2,9 @@ package com.ruoyi.web.controller.system;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import com.ruoyi.group.domain.Teacher;
+import com.ruoyi.group.service.ITeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -34,7 +37,7 @@ import com.ruoyi.system.service.ISysUserService;
 
 /**
  * 用户信息
- * 
+ *
  * @author ruoyi
  */
 @RestController
@@ -52,6 +55,9 @@ public class SysUserController extends BaseController
 
     @Autowired
     private TokenService tokenService;
+
+    @Autowired
+    private ITeacherService teacherService;
 
     /**
      * 获取用户列表
@@ -139,6 +145,26 @@ public class SysUserController extends BaseController
         }
         user.setCreateBy(SecurityUtils.getUsername());
         user.setPassword(SecurityUtils.encryptPassword(user.getPassword()));
+
+        // 新增用户后，如果是老师，需要添加到teacher表中。
+        Long i[] = user.getRoleIds();
+        boolean isTeacher = false;
+        for (int j = 0; j<i.length;j++){
+            if(i[j] == 104){
+                isTeacher = true;
+            }
+//            System.out.println(i[j]);
+        }
+        if(isTeacher == true){
+            Long deptId = user.getDeptId();
+            String teacherName = user.getNickName();
+            Teacher teacher = new Teacher();
+            teacher.setDeptId(deptId);
+            teacher.setTeacherName(teacherName);
+
+            teacherService.insertTeacher(teacher);
+        }
+
         return toAjax(userService.insertUser(user));
     }
 

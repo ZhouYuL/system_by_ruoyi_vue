@@ -73,4 +73,12 @@ public interface SysUserRoleMapper
      * @return 结果
      */
     public List<Long> selectUserIdByRole(Long role_id);
+
+    /**
+     * 通过userID获取到roleId
+     *
+     * @param userId 用户Id
+     * @return 结果
+     */
+    public Long selectRoleIdByUserId(Long userId);
 }

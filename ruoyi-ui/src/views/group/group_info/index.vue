@@ -76,7 +76,8 @@
 
     <el-table v-loading="loading" :data="groupInfoList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="序号" prop="infoId" align="center" />
+      <el-table-column label="序号" type="index" align="center" width="300" />
+       <!-- prop="infoId"  -->
       <!-- <el-table-column label="课程序号" align="center" prop="courseId" /> -->
       <el-table-column label="课程名称" align="center" prop="groupCourse" />
       <el-table-column label="教师名称" align="center" prop="groupTeacher" />
